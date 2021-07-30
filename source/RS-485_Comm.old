@@ -1,0 +1,125 @@
+/*
+ * RS-485_Comm.c
+ *
+ *  Created on: Jul 7, 2014
+ *      Author: Leonard M. Cronk
+ */
+
+
+#include "hal_stdtypes.h"
+#include "RS-485_Comm.h"
+#include "sci.h"
+#include "string.h"
+#include "reg_sci.h"
+#include "reg_spi.h"
+#include "gio.h"
+#include "het.h"
+
+
+#define   checkbit(var,bit)  (var & (0x01 << (bit)))
+#define   setbit(var,bit)    (var |= (0x01 << (bit)))
+#define   clrbit(var,bit)    (var &= (~(0x01 << (bit))))
+
+/**************************************************************************/
+/*							 New 13AUG12 L. Cronk   					  */
+/* a=target variable, b=bit number to act upon 0-n                        */
+/*                                                                        */
+/**************************************************************************/
+#define BIT_SET(a,b) ((a) |= (1<<(b)))
+#define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
+#define BIT_FLIP(a,b) ((a) ^= (1<<(b)))
+#define BIT_CHECK(a,b) ((a) & (1<<(b)))
+/* x=target variable, y=mask */
+#define BITMASK_SET(x,y) ((x) |= (y))
+#define BITMASK_CLEAR(x,y) ((x) &= (~(y)))
+#define BITMASK_FLIP(x,y) ((x) ^= (y))
+#define BITMASK_CHECK(x,y) ((x) & (y))
+
+#define D_SIZE 9
+
+#define OFF 0
+#define ON 1
+#define PASS 1
+#define FAIL 0
+#define TOGGLE 2
+#define FLASH 3
+
+#define INIT 0
+#define NOT_VALID 0
+#define NONE 0
+#define RUN 1
+#define PAUSE 2
+#define STOP 3
+#define DERATE 4
+#define RUN_ERROR 5
+#define NO_CAN 6
+#define BACKLIGHT 7
+#define SETUP 8
+
+#define IDLE 0
+#define REQUEST 1
+#define ACTIVE 2
+
+// #define TRUE  1
+#define OFF 0
+#define ON 1
+// #define FALSE  0
+#define SET 1
+#define CLR 0
+#define YES 1
+#define NO 0
+#define POS 1
+#define NEG 0
+
+#define TRIGGERED	2	/* state of health interval has expired */
+#define COMPLETE 2		/* power mode sequence complete */
+#define LOADED 3		/* power mode sequence has some values loaded */
+
+#define pos_0prcnt 0	/* TOC switch case labels  */
+#define neg_0prcnt 1
+#define	pos_2prcnt 2
+#define neg_2prcnt 3
+#define pos_8prcnt 4
+#define neg_8prcnt 5
+#define pos_16prcnt 6
+#define neg_16prcnt 7
+#define pos_30prcnt 8
+#define neg_30prcnt 9
+#define pos_2nm_med 10
+#define neg_2nm_med 11
+#define pos_6nm_high 12
+#define neg_6nm_high 13
+
+#define PRINT_ONE_CHANNEL 1
+#define PRINT_ALL_CHANNELS 2
+
+#define ADDR_MODE 0x100 //Necessary for RS485 code
+
+
+// E X T E R N A L   M A I N  V A R S
+
+extern unsigned long LED_TXD_msec_clock;	// rolling time base used for delay, USER LED#4
+extern int scilinREG_is_CIB_or_Monitor_or_WEB; // declare this int in this function
+
+
+void	transmit_str_485(char * return_message)
+{
+	gioSetBit(hetPORT1, 16, 1); // Set RS485 CS to Receive
+
+	if(scilinREG_is_CIB_or_Monitor_or_WEB == 0) // Need to differentiate between CIB and WEB mode after transmit_str_485() is called
+	{
+		scilinREG->GCR1 = scilinREG->GCR1 | ADDR_MODE;		//set to interrupt on Address Message only		old: sp_con = MODE2 | REC_ENABLE;
+	}
+	// if i ever had to debug string coming in --- set break and step
+//	char new_string[750];
+//	int new_string_len;
+//	new_string_len = strlen(return_message);
+//	strcpy(new_string,return_message );
+
+	sciSend(scilinREG, strlen(return_message), return_message);		/* USER CODE END */
+
+	// talk LED is now use for something else
+//	LED_TXD_msec_clock = 300;		// set LED on for 300mS
+//	gioSetBit(hetPORT1, 14, 1 );		// SET LED1
+
+}
