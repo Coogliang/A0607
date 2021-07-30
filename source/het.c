@@ -310,8 +310,8 @@ void hetInit(void)
     *     - Loop resolution prescaler
     *     - High resolution prescaler
     */
-    hetREG1->PFR = (uint32)((uint32) 2U << 8U)
-                | ((uint32) 47U);
+    hetREG1->PFR = (uint32)((uint32) 7U << 8U)
+                | ((uint32) 0U);
 
 
    /** - Parity control register
@@ -520,7 +520,7 @@ void pwmSetSignal(hetRAMBASE_t * hetRAM, uint32 pwm, hetSIGNAL_t signal)
 
     if(hetRAM == hetRAM1)
     {
-        pwmPeriod = (signal.period * 1000.0F) / 1200.120F;
+        pwmPeriod = (signal.period * 1000.0F) / 800.000F;
         pwmPolarity = s_het1pwmPolarity[pwm];
     }
     else
@@ -578,7 +578,7 @@ void pwmGetSignal(hetRAMBASE_t * hetRAM, uint32 pwm, hetSIGNAL_t* signal)
 
     if(hetRAM == hetRAM1)
     {
-        signal->period = ((float64)pwmPeriod * 1200.120F) / 1000.0F;
+        signal->period = ((float64)pwmPeriod * 800.000F) / 1000.0F;
     }
     else
     {
@@ -776,7 +776,7 @@ void capGetSignal(hetRAMBASE_t * hetRAM, uint32 cap, hetSIGNAL_t *signal)
 
     if( hetRAM == hetRAM1)
     {
-        signal->period = ((float64)pwmPeriod * 1200.120F) / 1000.0F;
+        signal->period = ((float64)pwmPeriod * 800.000F) / 1000.0F;
     }
     else
     {

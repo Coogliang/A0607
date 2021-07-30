@@ -1199,12 +1199,14 @@ BYD SA2FL rev1 12_17_2020
 #define TARGET_EHPS 18
 #define TARGET_SGMW_CN300 19
 #define TARGET_BYD_SA2FL 20
+#define TARGET_GWM_A0607 21
 
 
 /*  --------- CAN_DATA_REQUESTS  :: Set for number CAN variable request + 1   T1XX = 28   C1XX = 18    B9XX = 36    FCA = 9   CD391 = 9  G2KCA = 9
  *                                                                            PSA_CMP = 17      CN200 = 13 -------  */
 #define T1XX_CAN_DATA_REQUESTS 28                   /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define BYD_SA2FL_CAN_DATA_REQUESTS 11                /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
+#define GWM_A0607_CAN_DATA_REQUESTS 11                /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define C1XX_CAN_DATA_REQUESTS 18                   /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define GM_9BXX_CAN_DATA_REQUESTS 36                /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define FCA_ADAS_CAN_DATA_REQUESTS 9                /* Used for canX_request_index != can_index_value (previously just a #). Created for easier updating of code */
@@ -1245,7 +1247,7 @@ void set_torque_TOC_or_SENT_or_Analog();    // added for code consolidation and 
 /* ---------  M a i n   program  variables - Global   ---------  */
 
 // define target EPS product to test
-int target_product = TARGET_BYD_SA2FL;
+int target_product = TARGET_GWM_A0607;
 
 // board personality configuration vars
 int manufacturing_TOC = NO; // flag indicates we are using manufacturing TOC with Tester Present CAN messages    or    SENT torque simulation
@@ -1329,6 +1331,7 @@ int ign2_status;        // combine function of ign_on_flag and Engine_on_Signal 
 //int ign_on_flag;      // ignition state to product, ok to talk CAN and dump true data, if not, dump zeros
 //int Engine_on_Signal; // signal to send ENG ON message
 //int speed_flag;           /* If 100= 100mS periodic of CAN speed=100kph, 0= used at start of cal speed= 0Kph */
+
 
 
 
@@ -1423,7 +1426,7 @@ const uint8 Veh_speed_00_table_BYD_SA2FL[16][8]        =
         {0x00,0x00,0x00,0x00,0x00,0x00,0x0D,0xF0},
         {0x00,0x00,0x00,0x00,0x00,0x00,0x0E,0xF0},
         {0x00,0x00,0x00,0x00,0x00,0x00,0x0F,0xF0}};
-
+   
 int G2KCA_ADAS_crcVal_16;                   // G2KCA speed message calculation
 uint8 G2KCA_ADAS_Write_Vehicle_speed[8] = {0};      // G2KCA speed message calculation/
 unsigned char G2KCA_ADAS_CRC_counter;       // G2KCA speed message calculation
@@ -1898,7 +1901,7 @@ float fray1_FAAR_WE_MotTqEstimd_fp;             // fray1_dump_err_data 13       
 float fray1_FAAR_WE_LoaSca_fp;                  // fray1_dump_err_data 14        Derating Vector
 float fray1_FAAR_WE_EcuTMeas_fp;                // fray1_dump_err_data 15        Board Temp
 float fray1_FAAR_WE_MotWidgT_fp;                // fray1_dump_err_data 16        Estimated Motor Winding Temp
-float fray1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimated Magnet Temp
+float fray1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimatedï¿½Magnet Temp
 float fray1_FAAR_WE_MotFetT_fp;                 // fray1_dump_err_data 18        Estimated FET Temp
 
 // not used to date, would be captured during h_curr in PTC
@@ -1932,7 +1935,7 @@ float cal1_FAAR_WE_MotTqEstimd_fp;             // fray1_dump_err_data 13        
 float cal1_FAAR_WE_LoaSca_fp;                  // fray1_dump_err_data 14        Derating Vector
 float cal1_FAAR_WE_EcuTMeas_fp;                // fray1_dump_err_data 15        Board Temp
 float cal1_FAAR_WE_MotWidgT_fp;                // fray1_dump_err_data 16        Estimated Motor Winding Temp
-float cal1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimated Magnet Temp
+float cal1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimatedï¿½Magnet Temp
 float cal1_FAAR_WE_MotFetT_fp;                 // fray1_dump_err_data 18        Estimated FET Temp
 
 
@@ -2802,75 +2805,75 @@ float cal_C1XX_HwTrq_HwNm_high_neg_fp;      //  29  HW Tq total
 
  //
  // CAN vars used for new B_CIB style dumperr, floating point as numbers "12.41" values
- //
- unsigned int can_BYD_SA2FL_SystemState_byt;   // can1_dump_err_data 1     unsigned int  System State
-  float can_BYD_SA2FL_MotCurrQax_fp;           // can1_dump_err_data 2                   Motor Current Measurement
-  float can_BYD_SA2FL_HwTq0Meas_HwTq4_fp;      // can1_dump_err_data 3                   HwTq 4
-  float can_BYD_SA2FL_HwTq1Meas_HwTq5_fp;      // can1_dump_err_data 4                   HwTq 5
-  float can_BYD_SA2FL_MotHwPosn_fp;            // can1_dump_err_data 5                   Motor Handwheel Position
-  float can_BYD_SA2FL_BattVltg_fp;             // can1_dump_err_data 6                   Battery Voltage
-  float can_BYD_SA2FL_MotTq_fp;                // can1_dump_err_data 7                   Motor Torque
-  float can_BYD_SA2FL_HwTrq_fp;                // can1_dump_err_data 8                   Handwheel Torque
-  float can_BYD_SA2FL_MotMagTestim_fp;         // can1_dump_err_data 9                   Motor Mag Temp Estimated
-  float can_BYD_SA2FL_ECUTFilt_fp;             // can1_dump_err_data 10                  ECU Temp Filtered
+ //GWM A0607
+  unsigned int can_GWM_A0607_SystemState_byt;   // can1_dump_err_data 1     unsigned int  System State
+  float can_GWM_A0607_MotCurrQax_fp;           // can1_dump_err_data 2                   Motor Current Measurement
+  float can_GWM_A0607_HwTq0Meas_HwTq4_fp;      // can1_dump_err_data 3                   HwTq 4
+  float can_GWM_A0607_HwTq1Meas_HwTq5_fp;      // can1_dump_err_data 4                   HwTq 5
+  float can_GWM_A0607_MotHwPosn_fp;            // can1_dump_err_data 5                   Motor Handwheel Position
+  float can_GWM_A0607_BattVltg_fp;             // can1_dump_err_data 6                   Battery Voltage
+  float can_GWM_A0607_MotTq_fp;                // can1_dump_err_data 7                   Motor Torque
+  float can_GWM_A0607_HwTrq_fp;                // can1_dump_err_data 8                   Handwheel Torque
+  float can_GWM_A0607_MotMagTestim_fp;         // can1_dump_err_data 9                   Motor Mag Temp Estimated
+  float can_GWM_A0607_ECUTFilt_fp;             // can1_dump_err_data 10                  ECU Temp Filtered
 
-  float can_BYD_SA2FL_MotCurrQax1_fp;          // can1_dump_err_data 11   triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
-  float can_BYD_SA2FL_MotCurrQax2_fp;          // can1_dump_err_data 12   triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
-  float can_BYD_SA2FL_MotCurrQax3_fp;          // can1_dump_err_data 13  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_MotCurrQax1_fp;          // can1_dump_err_data 11   triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_MotCurrQax2_fp;          // can1_dump_err_data 12   triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_MotCurrQax3_fp;          // can1_dump_err_data 13  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
 
-  float can_BYD_SA2FL_HwTqArbn_HwTq1_fp;       // can1_dump_err_data 14  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
-  float can_BYD_SA2FL_HwTqArbn_HwTq2_fp;       // can1_dump_err_data 15  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
-  float can_BYD_SA2FL_HwTqArbn_HwTq3_fp;       // can1_dump_err_data 16  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_HwTqArbn_HwTq1_fp;       // can1_dump_err_data 14  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_HwTqArbn_HwTq2_fp;       // can1_dump_err_data 15  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
+  float can_GWM_A0607_HwTqArbn_HwTq3_fp;       // can1_dump_err_data 16  triggered by RTI - if(hcurr_flag == 1) // do hcurr torque profile
  //
  //
  // /* ----------------  T1XX C a l    V a r s  -----------------------------------------------  */
  // /* Some vars are accumulated over multiple runs before transmitting, "cal_xxx" storage is created here so "can_xxx" vars can be reused in parse_can1_data()  */
  // // cal/function storage  for cal prior to string build
- //
-  float cal_BYD_SA2FL_BattVltg_fp;                     //  1   Batt Volt
-  float cal_BYD_SA2FL_SystemState_byt;                 //  2   System State
-  float cal_BYD_SA2FL_HwTq0Meas_HwTq4_fp;              //  3   HwTq 4
-  float cal_BYD_SA2FL_HwTq1Meas_HwTq5_fp;              //  4   HwTq 5
-  float cal_BYD_SA2FL_MotHwPosn_fp;                    //  5   Motor Handwheel Position
-  float cal_BYD_SA2FL_MotTq_fp;                        //  6   Motor Torque
-  float cal_BYD_SA2FL_MotCurrQax_fp;                   //  7   Motor Current Measurement
-  float cal_BYD_SA2FL_HwTrq_fp;                        //  8   Handwheel Torque
-  float cal_BYD_SA2FL_MotMagTestim_fp;                 //  9   Motor Mag Temp Estimate
-  float cal_BYD_SA2FL_ECUTFilt_fp;                     //  10  ECU Temp Filtered
+ //GWM A0607
+  float cal_GWM_A0607_BattVltg_fp;                     //  1   Batt Volt
+  float cal_GWM_A0607_SystemState_byt;                 //  2   System State
+  float cal_GWM_A0607_HwTq0Meas_HwTq4_fp;              //  3   HwTq 4
+  float cal_GWM_A0607_HwTq1Meas_HwTq5_fp;              //  4   HwTq 5
+  float cal_GWM_A0607_MotHwPosn_fp;                    //  5   Motor Handwheel Position
+  float cal_GWM_A0607_MotTq_fp;                        //  6   Motor Torque
+  float cal_GWM_A0607_MotCurrQax_fp;                   //  7   Motor Current Measurement
+  float cal_GWM_A0607_HwTrq_fp;                        //  8   Handwheel Torque
+  float cal_GWM_A0607_MotMagTestim_fp;                 //  9   Motor Mag Temp Estimate
+  float cal_GWM_A0607_ECUTFilt_fp;                     //  10  ECU Temp Filtered
 
  //
  //
  /*  ---  Cal-Functional storage for motor currents, HW torque and Motor Torque at 3 levels and positive/negative values   */
- //
-  float cal_BYD_SA2FL_MotCurrQax_low_pos_fp;     //  9  Motor Current Measurement
-  float cal_BYD_SA2FL_MotCurrQax_med_pos_fp;     //  10  Motor Current Measurement
-  float cal_BYD_SA2FL_MotCurrQax_high_pos_fp;    //  11  Motor Current Measurement
+ //GWM A0607
+  float cal_GWM_A0607_MotCurrQax_low_pos_fp;     //  9  Motor Current Measurement
+  float cal_GWM_A0607_MotCurrQax_med_pos_fp;     //  10  Motor Current Measurement
+  float cal_GWM_A0607_MotCurrQax_high_pos_fp;    //  11  Motor Current Measurement
 
-  float cal_BYD_SA2FL_MotCurrQax_low_neg_fp;     //  12  Motor Current Measurement
-  float cal_BYD_SA2FL_MotCurrQax_med_neg_fp;     //  13  Motor Current Measurement
-  float cal_BYD_SA2FL_MotCurrQax_high_neg_fp;    //  14  Motor Current Measurement
+  float cal_GWM_A0607_MotCurrQax_low_neg_fp;     //  12  Motor Current Measurement
+  float cal_GWM_A0607_MotCurrQax_med_neg_fp;     //  13  Motor Current Measurement
+  float cal_GWM_A0607_MotCurrQax_high_neg_fp;    //  14  Motor Current Measurement
 
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp;  //  15  HW Tq total
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp;  //  16  HW Tq total
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp; //  17  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp;  //  15  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp;  //  16  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp; //  17  HW Tq total
 
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_low_neg_fp;  //  18  HW Tq total
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp;  //  19  HW Tq total
-  float cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp;      //  20  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_low_neg_fp;  //  18  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp;  //  19  HW Tq total
+  float cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp;      //  20  HW Tq total
 
-  float cal_BYD_SA2FL_MotTq_low_pos_fp;          //  21  Motor Torque Measurement
-  float cal_BYD_SA2FL_MotTq_med_pos_fp;          //  22  Motor Torque Measurement
-  float cal_BYD_SA2FL_MotTq_high_pos_fp;         //  23  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_low_pos_fp;          //  21  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_med_pos_fp;          //  22  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_high_pos_fp;         //  23  Motor Torque Measurement
 
-  float cal_BYD_SA2FL_MotTq_low_neg_fp;          //  24  Motor Torque Measurement
-  float cal_BYD_SA2FL_MotTq_med_neg_fp;          //  25  Motor Torque Measurement
-  float cal_BYD_SA2FL_MotTq_high_neg_fp;         //  26  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_low_neg_fp;          //  24  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_med_neg_fp;          //  25  Motor Torque Measurement
+  float cal_GWM_A0607_MotTq_high_neg_fp;         //  26  Motor Torque Measurement
  //
 
 /*  --------------   H E L P      A V A I L A B L E    ------------------------------   */
 //stop_trq_switch\r\n\
 
-char help_menu[] ={"BYD SA2FL rev01 03_03_03 28JUN19\r\n\
+char help_menu[] ={"GWM A0607 rev01 02_00_05 27JUL21\r\n\
 dumperr   = dump to RTS\r\n\
 p_on      = power mode on\r\n\
 p_on_warm = power mode warm_init on\r\n\
@@ -3374,6 +3377,37 @@ const char commands[][57] = {
 
 /******************************************************************************************************************************/
 
+// C A N  1  --  G W M A 0 6 07  Products
+#define PROD_MESS1_ID               canMESSAGE_BOX1    // 0x148   11bit identifier-- Rec Response from EPS (not used)
+#define PROD_MESS2_ID               canMESSAGE_BOX2    // 0x778   11bit identifier-- Rec ON Star from EPS (not used)
+#define CCP_Engine_Run              canMESSAGE_BOX3    // 0x271   11bit identifier-- Trans Engine ON to EPS // ECM2 (MSG ID $271)(CAN)
+#define GWM_A0607_CCP_Vehspd_ID     canMESSAGE_BOX4    // 0x265   11bit identifier-- Trans Speed to EPS  // ABS3 (MSG ID $265)(CAN)
+#define GWM_A0607_CCP_Endspd_ID     canMESSAGE_BOX5    // 0x348   11bit identifier-- Trans EngSpd to EPS      // ECM1 (MSG ID $111)(CAN)
+
+#define GWM_A0607_CCP_RESPONSE_ID   canMESSAGE_BOX7    // 0x63D   11bit identifier-- Rec CCP Response from EPS for Data
+#define GWM_A0607_CCP_REQUEST_ID    canMESSAGE_BOX6    // 0x63C   11bit identifier-- Trans CCP Request for Data to EPS
+//#define XCP_EA3_REQUEST_ID        canMESSAGE_BOX8    // 0x242   11bit identifier-- Trans XCP Request from EPS for data
+//#define XCP_EA3_RESPONSE_ID       canMESSAGE_BOX9    // 0x642   11bit identifier-- Rec XCP Response to EPS for data
+#define XCP_EA4_REQUEST_ID          canMESSAGE_BOX10   // 0x712   11bit identifier-- Trans XCP Request from EPS for data
+#define XCP_EA4_RESPONSE_ID         canMESSAGE_BOX11   // 0x710   11bit identifier-- Rec XCP Response to EPS for data
+#define TESTER_REC_DEBUG_ID         canMESSAGE_BOX12   // 0x7FF   11bit identifier-- REC from Anyone
+#define TESTER_TRANS_DEBUG_ID       canMESSAGE_BOX13   // 0x7FE   11bit identifier-- Transmit to Anyone
+
+#define GWM_A0607_CCP_Wss_ID                canMESSAGE_BOX14    // 0x231   11bit identifier-- Trans Wss to EPS      // ABS1 (MSG ID $231) (CAN)
+#define GWM_A0607_CCP_MaxEngTrqNorm_ID      canMESSAGE_BOX15    // 0x371   11bit identifier-- Trans MaxEngTrqNorm to EPS      // ECM3 (MSG ID $371) (CAN)
+#define GWM_A0607_CCP_NetEngTrq_ID          canMESSAGE_BOX16    // 0x082   11bit identifier-- Trans NetEngTrq to EPS      // ECM4 (MSG ID $082) (CAN)
+#define GWM_A0607_CCP_DiagFuncReq_ID        canMESSAGE_BOX17    // 0x760   11bit identifier-- Trans DiagFuncReq to EPS      // DIAG_FUN_REQ (MSG ID $760)
+#define GWM_A0607_CCP_VehYawRate_ID         canMESSAGE_BOX18    // 0x245   11bit identifier-- Trans VehYawRate to EPS      // ABM2 (Msg ID $245) (CAN/CANFD)
+#define GWM_A0607_CCP_SteerWheelAng_ID      canMESSAGE_BOX19    // 0x0A1   11bit identifier-- Trans SteerWheelAng to EPS      // CSA2 (Msg ID $0A1)(CAN/CANFD)
+
+// C A N 2  --  G W M A 0 6 07  Products none are ADAS yet
+
+//#define CCP_CAN2_RESPONSE_ID  canMESSAGE_BOX3    // 0x642   11bit identifier-- Rec XCP Response to EPS for data
+//#define CCP_CAN2_REQUEST_ID   canMESSAGE_BOX4    // 0x242   11bit identifier-- Trans XCP Request from EPS for data
+//#define PERIOD_CAN2_ID        canMESSAGE_BOX5    // 0x182   11bit identifier-- Trans periodic to EPS
+
+/******************************************************************************************************************************/
+
 // C A N  1  --  P S A    Products
 #define PSA_PROD_MESS1_ID         canMESSAGE_BOX1    // 0x148   11bit identifier-- Rec Response from EPS (not used)
 #define PSA_PROD_MESS2_ID         canMESSAGE_BOX2    // 0x778   11bit identifier-- Rec ON Star from EPS (not used)
@@ -3486,6 +3520,46 @@ uint8_t can2_dump_err_data[40][9];      // storage for CAN Response messages, mu
                                                       // this must precede request for DTC's. Session times out approx after 5 seconds.
                                                       // id642 should get reply : 01 50 AA AA AA AA AA AA
 
+/* --------------   G W M A 0 6 0 7   CAN  ------------------------ */
+// Set Vehspd = 0 //ABS3 (MSG ID $265)(CAN)
+    unsigned char ccp_GWM_A0607_write_Vehspd[];       /* engine_on & speed 0kph 8 bytes*/   
+    unsigned char GWM_A0607_Vehspd_CRC_counter;
+    unsigned char GWM_A0607_Vehspd_CRC_ChKSum;
+
+// set EngState = 0x02 //ECM2 (MSG ID $271)(CAN)
+    unsigned char ccp_GWM_A0607_write_EngState[];       /* engine_on 8 bytes*/   
+    unsigned char GWM_A0607_EngState_CRC_counter;
+    unsigned char GWM_A0607_EngState_CRC_ChKSum;
+ //   unsigned char E2E_EngState_data_byte_array[];     /*CRC calculation & 9 bytes --[DtatID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]*/  
+
+// Set EngSpd = 0 // ECM1 (MSG ID $111)(CAN)
+    const unsigned char ccp_GWM_A0607_write_EngSpd[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80}; /* EngSpd 8 bytes & EngSpdVldty(bit63) 0x1:Valid*/   
+
+// Set Wss = 0 // ABS1 (MSG ID $231) (CAN)
+    unsigned char ccp_GWM_A0607_write_Wss[];       /* Wss 8 bytes*/   
+    unsigned char GWM_A0607_Wss_CRC_counter;
+    unsigned char GWM_A0607_Wss_CRC_ChKSum;
+
+// Set VehYawRate = 0  // ABM2 (Msg ID $245) (CAN/CANFD)
+    unsigned char ccp_GWM_A0607_write_VehYawRate[];       /* VehYawRate 8 bytes*/   
+    unsigned char GWM_A0607_VehYawRate_CRC_counter;
+    unsigned char GWM_A0607_VehYawRate_CRC_ChKSum;
+
+// Set SteerWheelAng =  // CSA2 (Msg ID $0A1)(CAN/CANFD)
+    unsigned char ccp_GWM_A0607_write_SteerWheelAng[];       /* SteerWheelAng 8 bytes*/   
+    unsigned char GWM_A0607_SteerWheelAng_CRC_counter;
+    unsigned char GWM_A0607_SteerWheelAng_CRC_ChKSum;
+
+// Set MaxEngTrqNorm = 0 // ECM3 (MSG ID $371) (CAN)
+    unsigned char ccp_GWM_A0607_write_MaxEngTrqNorm[];       /* MaxEngTrqNorm 8 bytes*/   
+    unsigned char GWM_A0607_MaxEngTrqNorm_CRC_counter;
+    unsigned char GWM_A0607_MaxEngTrqNorm_CRC_ChKSum;
+
+// Set NetEngTrq = 0 // ECM4 (MSG ID $082) (CAN)
+    const unsigned char ccp_GWM_A0607_write_NetEngTrq[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; /* NetEngTrq 8 bytes & NetEngTrq = 0 */   
+
+
+
 // ======  Manufacturing services ================
 
     const unsigned char xcp_EA4_write_get_DTC_rqst1[]   = {0x03,0x22,0xFD,0x60,0x00,0x00,0x00,0x00};        // EA4 format
@@ -3557,7 +3631,7 @@ uint8_t can2_dump_err_data[40][9];      // storage for CAN Response messages, mu
     const unsigned char ccp_FAAR_WE_LoaSca_str[]            = {0xFE,0xBF,0xF0,0xD8};   // 14   FE BE F0 D8     Derating Vector
     const unsigned char ccp_FAAR_WE_EcuTMeas_str[]          = {0xFE,0xBF,0x8B,0x20};   // 15   FE BF 8B 20     Board Temp
     const unsigned char ccp_FAAR_WE_MotWidgT_str[]          = {0xFE,0xBF,0x8B,0x54};   // 16   FE BF 8B 54     Estimated Motor Winding Temp
-    const unsigned char ccp_FAAR_WE_MotMagT_str[]           = {0xFE,0xBF,0x8B,0x50};   // 17   FE BF 8B 50     Estimated Magnet Temp
+    const unsigned char ccp_FAAR_WE_MotMagT_str[]           = {0xFE,0xBF,0x8B,0x50};   // 17   FE BF 8B 50     Estimatedï¿½Magnet Temp
     const unsigned char ccp_FAAR_WE_MotFetT_str[]           = {0xFE,0xBE,0x8B,0x4C};   // 18   FE BF 8B 4C     Estimated FET Temp
 
 //    const unsigned char ccp_FAAR_WE_MotTq_str[]             = {0xFE,0xBE,0xBE,0xB8};   // 19   fe be be b8     Motor Torque
@@ -3797,20 +3871,20 @@ uint8_t can2_dump_err_data[40][9];      // storage for CAN Response messages, mu
 
     /*    CAN data requests for T1XX    END  -----------------------------------------------------------------*/
 
-    //  /*    CAN data requests for BYD_SA2FL    START  ------  N O T E -- L I T T L E   E I N D I A N   in  constant string  -------------------------*/
+    //  /*    CAN data requests for GWM A0607    START  ------  N O T E -- L I T T L E   E I N D I A N   in  constant string  -------------------------*/
     //
-            const unsigned char ccp_BYD_SA2FL_SystemState_byt[]       = {0xF4,0x01,0x00,0x00,0x72,0xAD,0xBE,0xFE};   // 1    FE BE AD 72     System State
-            const unsigned char ccp_BYD_SA2FL_MotCurrQax_fp[]         = {0xF4,0x04,0x00,0x00,0xB4,0xA9,0xBE,0xFE};   // 2    FE BE A9 B4     Motor Current Measurement
-            const unsigned char ccp_BYD_SA2FL_HwTq0Meas_HwTq4_fp[]    = {0xF4,0x04,0x00,0x00,0x38,0xA9,0xBE,0xFE};   // 3    FE BE A9 38     HwTq 4
-            const unsigned char ccp_BYD_SA2FL_HwTq1Meas_HwTq5_fp[]    = {0xF4,0x04,0x00,0x00,0x3C,0xA9,0xBE,0xFE};   // 4    FE BE A9 3C     HwTq 5
-            const unsigned char ccp_BYD_SA2FL_MotHwPosn_fp[]          = {0xF4,0x02,0x00,0x00,0x00,0xDD,0xBE,0xFE};   // 5    FE BE DD 00     Motor Handwheel Position
-            const unsigned char ccp_BYD_SA2FL_BattVltg_fp[]           = {0xF4,0x04,0x00,0x00,0xC8,0xA8,0xBE,0xFE};   // 6    FE BE A8 C8     Battery Voltage
-            const unsigned char ccp_BYD_SA2FL_MotTq_fp[]              = {0xF4,0x04,0x00,0x00,0x90,0xAB,0xBE,0xFE};   // 7    FE BE AB 90     Motor Torque
-            const unsigned char ccp_BYD_SA2FL_HwTrq_fp[]              = {0xF4,0x04,0x00,0x00,0xD0,0xAA,0xBE,0xFE};   // 8    FE BE AA D0     Handwheel Torque
-            const unsigned char ccp_BYD_SA2FL_MotMagTestim_fp[]       = {0xF4,0x04,0x00,0x00,0x04,0xAB,0xBE,0xFE};   // 9    FE BE AB 04     Motor Mag Temp Estimated
-            const unsigned char ccp_BYD_SA2FL_ECUTFilt_fp[]           = {0xF4,0x04,0x00,0x00,0x48,0xAA,0xBE,0xFE};   // 10   FE BE AA 48     ECU Temp Filtered
+            const unsigned char ccp_GWM_A0607_SystemState_byt[]       = {0xF4,0x01,0x00,0x00,0x22,0xA9,0xBE,0xFE};   // 1    0xFEBEA922     System State  //Rte_SysStMod_SysSt_Val
+            const unsigned char ccp_GWM_A0607_MotCurrQax_fp[]         = {0xF4,0x04,0x00,0x00,0xC0,0xA4,0xBE,0xFE};   // 2    0xFEBEA4C0     Motor Current Measurement  //Rte_CDD_MotCtrlMgr_MotCurrQax_Val
+            const unsigned char ccp_GWM_A0607_HwTq0Meas_HwTq4_fp[]    = {0xF4,0x04,0x00,0x00,0x3C,0xA4,0xBE,0xFE};   // 3    0xFEBEA43C     HwTq 4   //Rte_CDD_HwTq4Meas_HwTq4_Val
+            const unsigned char ccp_GWM_A0607_HwTq1Meas_HwTq5_fp[]    = {0xF4,0x04,0x00,0x00,0x40,0xA4,0xBE,0xFE};   // 4    0xFEBEA440     HwTq 5   //Rte_CDD_HwTq5Meas_HwTq5_Val
+            const unsigned char ccp_GWM_A0607_MotHwPosn_fp[]          = {0xF4,0x02,0x00,0x00,0xE4,0xA5,0xBE,0xFE};   // 5    0xFEBEA5E4     Motor Handwheel Position   // Rte_HwAgSysArbn_HwAgFinal_Val
+            const unsigned char ccp_GWM_A0607_BattVltg_fp[]           = {0xF4,0x04,0x00,0x00,0xE0,0xA3,0xBE,0xFE};   // 6    0xFEBEA3E0     Battery Voltage     //Rte_BattVltg_BrdgVltg_Val
+            const unsigned char ccp_GWM_A0607_MotTq_fp[]              = {0xF4,0x04,0x00,0x00,0x2C,0xA7,0xBE,0xFE};   // 7    0xFEBEA72C     Motor Torque        //Rte_Swp_MotTqCmdSwp_Val
+            const unsigned char ccp_GWM_A0607_HwTrq_fp[]              = {0xF4,0x04,0x00,0x00,0x08,0xA6,0xBE,0xFE};   // 8    0xFEBEA608     Handwheel Torque    //Rte_HwTqArbn_HwTq_Val
+            const unsigned char ccp_GWM_A0607_MotMagTestim_fp[]       = {0xF4,0x04,0x00,0x00,0x54,0xA7,0xBE,0xFE};   // 9    0xFEBEA754     Motor Mag Temp Estimated    //Rte_TEstimn_MotMagT_Val
+            const unsigned char ccp_GWM_A0607_ECUTFilt_fp[]           = {0xF4,0x04,0x00,0x00,0x58,0xA5,0xBE,0xFE};   // 10   0xFEBEA558     ECU Temp Filtered   // Rte_EcuTMeas_EcuTFild_Val
 
-/*    CAN data requests for BYD_SA2FL    END  -----------------------------------------------------------------*/
+/*    CAN data requests for GWM_A0607    END  -----------------------------------------------------------------*/
 
 
 
@@ -4975,13 +5049,13 @@ int main(void)
     can_T1XX_HwTqArbn_HwTq2_fp = -100;
     can_T1XX_HwTqArbn_HwTq3_fp = -100;
 
-    can_BYD_SA2FL_MotCurrQax1_fp = -100;  // init Hcurr Qax reads to -100 ..also set back after a dumperr. Only changed during Hcurr command.
-    can_BYD_SA2FL_MotCurrQax2_fp = -100;
-    can_BYD_SA2FL_MotCurrQax3_fp = -100;
+    can_GWM_A0607_MotCurrQax1_fp = -100;  // init Hcurr Qax reads to -100 ..also set back after a dumperr. Only changed during Hcurr command.
+    can_GWM_A0607_MotCurrQax2_fp = -100;
+    can_GWM_A0607_MotCurrQax3_fp = -100;
 
-    can_BYD_SA2FL_HwTqArbn_HwTq1_fp = -100;
-    can_BYD_SA2FL_HwTqArbn_HwTq2_fp = -100;
-    can_BYD_SA2FL_HwTqArbn_HwTq3_fp = -100;
+    can_GWM_A0607_HwTqArbn_HwTq1_fp = -100;
+    can_GWM_A0607_HwTqArbn_HwTq2_fp = -100;
+    can_GWM_A0607_HwTqArbn_HwTq3_fp = -100;
 
     can1_G2KCA_MtrCurrQax1_fp = -100;       // init Qax reads to -100 ..also set back after a dumperr
     can1_G2KCA_MtrCurrQax2_fp = -100;
@@ -5304,7 +5378,7 @@ int main(void)
 //old,stored new loc and 0x0a looks like 10dec, bad.    sprintf(board_id,"%d",board_id_bin >> 12);  /* shift right 12 to get id, store in string as hex string */
 
 
-    strcpy(CIB_config_data.SOFTWARE_VERSION , "BYD SA2FL rev01 17DEC2020");    // program version name
+    strcpy(CIB_config_data.SOFTWARE_VERSION , "GWM A0607 rev01 02.00.05 27Jul2021");    // program version name
 //old   char version [] = {"Ford S550-UP375 rev9 06_00_08  09/09/14"};  // program version name
 
 
@@ -6372,6 +6446,7 @@ void eval_command_string(void)
             {
             case TARGET_T1XX:
             case TARGET_BYD_SA2FL:
+            case TARGET_GWM_A0607:
             case TARGET_S550DIGITAL:
             case TARGET_FCA_ADAS:
             case TARGET_G2KCA_ADAS:
@@ -6430,6 +6505,9 @@ void eval_command_string(void)
             case TARGET_9BXX:
                 canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
             break;
+            case TARGET_GWM_A0607:
+                canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);  
+            break;        
             case TARGET_FCA_ADAS:
                 canTransmit(canREG1, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
                 canTransmit(canREG2, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
@@ -6511,7 +6589,11 @@ void eval_command_string(void)
                 break;
 
                 case TARGET_BYD_SA2FL:       //EA4 is different
-                    canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+                        canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+                break;
+
+                case TARGET_GWM_A0607:       //EA4 is different
+                        canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
                 break;
 
                 case TARGET_G2KCA_ADAS:     //EA4 is different
@@ -6564,6 +6646,7 @@ void eval_command_string(void)
         {
         case TARGET_T1XX:
         case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         case TARGET_C1XX:
         case TARGET_9BXX:
         case TARGET_FCA_ADAS:
@@ -6637,6 +6720,7 @@ void eval_command_string(void)
         {
         case TARGET_T1XX:
         case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         case TARGET_S550DIGITAL:
         case TARGET_FCA_ADAS:
         case TARGET_G2KCA_ADAS:
@@ -6702,6 +6786,9 @@ void eval_command_string(void)
             case TARGET_9BXX:
                 canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
             break;
+            case TARGET_GWM_A0607:
+            canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect); 
+            break;
             case TARGET_FCA_ADAS:
                 canTransmit(canREG1, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
                 canTransmit(canREG2, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
@@ -6758,6 +6845,10 @@ void eval_command_string(void)
                 break;
 
                 case TARGET_BYD_SA2FL:       //EA4 is different
+                    canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+                break;
+
+                case TARGET_GWM_A0607:      //EA4 is different
                     canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
                 break;
 
@@ -6823,6 +6914,10 @@ void eval_command_string(void)
                 ShiftCAN1();                    // CCP connect
                 while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
                 break;
+            case TARGET_GWM_A0607:       //EA4 is different
+                ShiftCAN1();                    // CCP connect
+                while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+                break;
             case TARGET_C1XX:
                 ShiftCAN1();                    // CCP connect
                 while((can1_request_index != C1XX_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
@@ -6877,7 +6972,8 @@ void eval_command_string(void)
             switch(target_product)
             {
             case TARGET_T1XX: can1_sys_state_warm_init = can_T1XX_SystemState_byt; break;
-            case TARGET_BYD_SA2FL: can1_sys_state_warm_init = can_BYD_SA2FL_SystemState_byt; break;
+//          case TARGET_BYD_SA2FL: can1_sys_state_warm_init = can_BYD_SA2FL_SystemState_byt; break;
+            case TARGET_GWM_A0607: can1_sys_state_warm_init = can_GWM_A0607_SystemState_byt; break;
             case TARGET_C1XX: can1_sys_state_warm_init = can_C1XX_SystemState_byt; break;
             case TARGET_9BXX: break;
             case TARGET_FCA_ADAS: can1_sys_state_warm_init = can1_FCA_SystemState_byt; break;
@@ -7502,6 +7598,9 @@ void eval_command_string(void)
                 canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
         break;
 
+        case TARGET_GWM_A0607:      //EA4 is different
+        canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+        break;
 
         case TARGET_C1XX:
         case TARGET_9BXX:
@@ -7561,6 +7660,7 @@ void eval_command_string(void)
         {
         case TARGET_T1XX:       // non ADAS, no CAN2, no Flex 2
         case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         case TARGET_C1XX:
         case TARGET_9BXX:
         case TARGET_PSA_CMP:
@@ -8443,6 +8543,7 @@ void eval_command_string(void)
                 {
                 case TARGET_T1XX:
                 case TARGET_BYD_SA2FL:
+                case TARGET_GWM_A0607:
                 case TARGET_S550DIGITAL:
                 case TARGET_FCA_ADAS:
                 case TARGET_G2KCA_ADAS:
@@ -8475,6 +8576,7 @@ void eval_command_string(void)
                 {
                 case TARGET_T1XX:
                 case TARGET_BYD_SA2FL:
+                case TARGET_GWM_A0607:
                 case TARGET_C1XX:
                 case TARGET_9BXX:
                 case TARGET_FCA_ADAS:
@@ -8516,6 +8618,9 @@ void eval_command_string(void)
                 case TARGET_9BXX:
 
                     canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
+                break;
+                case TARGET_GWM_A0607:
+                canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);  
                 break;
                 case TARGET_FCA_ADAS:
                     canTransmit(canREG1, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
@@ -8566,6 +8671,10 @@ void eval_command_string(void)
                         canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
                     break;
 
+                    case TARGET_GWM_A0607:      //EA4 is different
+                    canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+                    break;
+
                     case TARGET_G2KCA_ADAS:     //EA4 is different
                         canTransmit(canREG1, G2KCA_ECU1_CAN1_XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
                     break;
@@ -8607,6 +8716,7 @@ void eval_command_string(void)
             {
             case TARGET_T1XX:
             case TARGET_BYD_SA2FL:
+            case TARGET_GWM_A0607:
             case TARGET_C1XX:
             case TARGET_9BXX:
             case TARGET_FCA_ADAS:
@@ -8670,6 +8780,7 @@ void eval_command_string(void)
                 {
                 case TARGET_T1XX:
                 case TARGET_BYD_SA2FL:
+                case TARGET_GWM_A0607:
                 case TARGET_S550DIGITAL:
                 case TARGET_FCA_ADAS:
                 case TARGET_G2KCA_ADAS:
@@ -8703,6 +8814,7 @@ void eval_command_string(void)
                 {
                 case TARGET_T1XX:
                 case TARGET_BYD_SA2FL:
+                case TARGET_GWM_A0607:
                 case TARGET_C1XX:
                 case TARGET_9BXX:
                 case TARGET_FCA_ADAS:
@@ -8744,6 +8856,7 @@ void eval_command_string(void)
                 {
                 case TARGET_T1XX:
                 case TARGET_BYD_SA2FL:
+                case TARGET_GWM_A0607:
                 case TARGET_C1XX:
                 case TARGET_9BXX:
                 case TARGET_PSA_CMP:
@@ -8783,6 +8896,7 @@ void eval_command_string(void)
                     {
                     case TARGET_T1XX:
                     case TARGET_BYD_SA2FL:
+                    case TARGET_GWM_A0607:
                     case TARGET_PSA_CMP:
                     case TARGET_SGMW_CN200:
                     case TARGET_RENAULT_NISSAN:
@@ -8819,6 +8933,7 @@ void eval_command_string(void)
             {
             case TARGET_T1XX:
             case TARGET_BYD_SA2FL:
+            case TARGET_GWM_A0607:
             case TARGET_C1XX:
             case TARGET_9BXX:
             case TARGET_FCA_ADAS:
@@ -9034,7 +9149,7 @@ void eval_command_string(void)
 
                                 break;
                             }
-                        case TARGET_BYD_SA2FL:
+                        case TARGET_GWM_A0607:
                         {
                             // rev06
 
@@ -9055,15 +9170,15 @@ void eval_command_string(void)
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
-                                   "12,value_sent3_Adr1_ChA1_Pos_cnt,13,value_sent4_Adr1_ChB1_Pos_cnt,14,can_BYD_SA2FL_SystemState_byt,");
+                                   "12,value_sent3_Adr1_ChA1_Pos_cnt,13,value_sent4_Adr1_ChB1_Pos_cnt,14,can_GWM_A0607_SystemState_byt,");
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
-                                   "15,can_BYD_SA2FL_MotCurrQax_fp,16,can_BYD_SA2FL_HwTq0Meas_HwTq4_fp,17,can_BYD_SA2FL_HwTq1Meas_HwTq5_fp,18,can_BYD_SA2FL_MotHwPosn_fp,19,can_BYD_SA2FL_BattVltg_fp,20,can_BYD_SA2FL_MotTq_fp,21,can_BYD_SA2FL_HwTrq_fp,");
+                                   "15,can_GWM_A0607_MotCurrQax_fp,16,can_GWM_A0607_HwTq0Meas_HwTq4_fp,17,can_GWM_A0607_HwTq1Meas_HwTq5_fp,18,can_GWM_A0607_MotHwPosn_fp,19,can_GWM_A0607_BattVltg_fp,20,can_GWM_A0607_MotTq_fp,21,can_GWM_A0607_HwTrq_fp,");
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
-                                   "22,can_BYD_SA2FL_MotMagTestim_fp,23,can_BYD_SA2FL_ECUTFilt_fp,24,N/A,25,N/A,26,N/A,27,N/A,28,N/A,29,N/A,");
+                                   "22,can_GWM_A0607_MotMagTestim_fp,23,can_GWM_A0607_ECUTFilt_fp,24,N/A,25,N/A,26,N/A,27,N/A,28,N/A,29,N/A,");
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
@@ -9071,7 +9186,7 @@ void eval_command_string(void)
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
-                                   "39,N/A,40,N/A,41,can_BYD_SA2FL_MotCurrQax1_fp,42,can_BYD_SA2FL_MotCurrQax2_fp,43,can_BYD_SA2FL_MotCurrQax3_fp,44,can_BYD_SA2FL_HwTqArbn_HwTq1_fp,45,can_BYD_SA2FL_HwTqArbn_HwTq2_fp,46,can_BYD_SA2FL_HwTqArbn_HwTq3_fp,");
+                                   "39,N/A,40,N/A,41,can_GWM_A0607_MotCurrQax1_fp,42,can_GWM_A0607_MotCurrQax2_fp,43,can_GWM_A0607_MotCurrQax3_fp,44,can_GWM_A0607_HwTqArbn_HwTq1_fp,45,can_GWM_A0607_HwTqArbn_HwTq2_fp,46,can_GWM_A0607_HwTqArbn_HwTq3_fp,");
                             strcat(return_message,temp_return_message);
 
                             strcpy(temp_return_message,
@@ -10233,9 +10348,9 @@ ShiftCAN1();
         break;
         }   // end case TARGET_T1XX
 
-        case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         {
-//  B Y D S A 2 F L   F U N C T I O N A L S ------------------------------
+//  G W M A 0 6 0 7   F U N C T I O N A L S ------------------------------
 
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 0a    Just starting CAL\r\n");
                     sciSend(sciREG,strlen(sbuf_tx_main),sbuf_tx_main);      // echo to port1
@@ -10306,21 +10421,21 @@ ShiftCAN1();
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
 // New B-CIB using floats for storage and printing
-        cal_BYD_SA2FL_BattVltg_fp = can_BYD_SA2FL_BattVltg_fp;                       //  1   Batt Volt
-        cal_BYD_SA2FL_SystemState_byt = can_BYD_SA2FL_SystemState_byt;               //  2   System State Byte
-        cal_BYD_SA2FL_HwTq0Meas_HwTq4_fp = can_BYD_SA2FL_HwTq0Meas_HwTq4_fp;         //  3   HW Torque 4
-        cal_BYD_SA2FL_HwTq1Meas_HwTq5_fp = can_BYD_SA2FL_HwTq1Meas_HwTq5_fp;         //  4   HW Torque 5
-        cal_BYD_SA2FL_MotHwPosn_fp = can_BYD_SA2FL_MotHwPosn_fp;                     //  5   Motor HW Position
-        cal_BYD_SA2FL_MotTq_fp = can_BYD_SA2FL_MotTq_fp;                             //  6   Motor Torque
-        cal_BYD_SA2FL_MotCurrQax_fp = can_BYD_SA2FL_MotCurrQax_fp;                   //  7   Motor Current QAX
-        cal_BYD_SA2FL_HwTrq_fp = can_BYD_SA2FL_HwTrq_fp;                             //  8   HW Torque
-        cal_BYD_SA2FL_MotMagTestim_fp = can_BYD_SA2FL_MotMagTestim_fp;               //  9   Motor Mag Temp Estimated
-        cal_BYD_SA2FL_ECUTFilt_fp = can_BYD_SA2FL_ECUTFilt_fp;                       //  10  ECU Temp Filtered
+        cal_GWM_A0607_BattVltg_fp = can_GWM_A0607_BattVltg_fp;                       //  1   Batt Volt
+        cal_GWM_A0607_SystemState_byt = can_GWM_A0607_SystemState_byt;               //  2   System State Byte
+        cal_GWM_A0607_HwTq0Meas_HwTq4_fp = can_GWM_A0607_HwTq0Meas_HwTq4_fp;         //  3   HW Torque 4
+        cal_GWM_A0607_HwTq1Meas_HwTq5_fp = can_GWM_A0607_HwTq1Meas_HwTq5_fp;         //  4   HW Torque 5
+        cal_GWM_A0607_MotHwPosn_fp = can_GWM_A0607_MotHwPosn_fp;                     //  5   Motor HW Position
+        cal_GWM_A0607_MotTq_fp = can_GWM_A0607_MotTq_fp;                             //  6   Motor Torque
+        cal_GWM_A0607_MotCurrQax_fp = can_GWM_A0607_MotCurrQax_fp;                   //  7   Motor Current QAX
+        cal_GWM_A0607_HwTrq_fp = can_GWM_A0607_HwTrq_fp;                             //  8   HW Torque
+        cal_GWM_A0607_MotMagTestim_fp = can_GWM_A0607_MotMagTestim_fp;               //  9   Motor Mag Temp Estimated
+        cal_GWM_A0607_ECUTFilt_fp = can_GWM_A0607_ECUTFilt_fp;                       //  10  ECU Temp Filtered
 
 // ------------------------------------------------------------- Step 3a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
 
@@ -10385,9 +10500,9 @@ ShiftCAN1();
         while(system_msec_clock < system_msec_clock_temp);
 
 
-        cal_BYD_SA2FL_MotCurrQax_low_pos_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_low_pos_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_low_pos_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp = 0.0;
+        cal_GWM_A0607_MotTq_low_pos_fp = 0.0;
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
         {
@@ -10397,7 +10512,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10407,18 +10522,18 @@ ShiftCAN1();
 //      cal_MotCurrQax_low_pos_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_low_pos_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_low_pos_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_low_pos_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_low_pos_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_low_pos_fp += can_GWM_A0607_MotTq_fp;
 
         }
 
 //      cal_MotCurrQax_low_pos_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_low_pos_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_low_pos_fp = cal_BYD_SA2FL_MotCurrQax_low_pos_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp = cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_low_pos_fp = cal_BYD_SA2FL_MotTq_low_pos_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_low_pos_fp = cal_GWM_A0607_MotCurrQax_low_pos_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp = cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp / 10.0;
+        cal_GWM_A0607_MotTq_low_pos_fp = cal_GWM_A0607_MotTq_low_pos_fp / 10.0;
 
 // ------------------------------------------------------------- Step 4a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 4a    Just finished sent_data_array_pos_p0nm \r\n");
@@ -10455,9 +10570,9 @@ ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 1000;  // wait 500 mS, wait for system to stabilize
         while(system_msec_clock < system_msec_clock_temp);
 
-        cal_BYD_SA2FL_MotCurrQax_low_neg_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_neg_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_low_neg_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_low_neg_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_neg_fp = 0.0;
+        cal_GWM_A0607_MotTq_low_neg_fp = 0.0;
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
         {
@@ -10467,7 +10582,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10477,9 +10592,9 @@ ShiftCAN1();
 //      cal_MotCurrQax_low_neg_fp = cal_MotCurrQax_low_neg_fp;
 //      cal_HwTqArbn_HwTq_low_neg_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_low_neg_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_neg_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_low_neg_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_low_neg_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_neg_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_low_neg_fp += can_GWM_A0607_MotTq_fp;
 
         }
 
@@ -10487,9 +10602,9 @@ ShiftCAN1();
 //      cal_MotCurrQax_low_neg_fp = cal_MotCurrQax_low_neg_fp;
 //      cal_HwTqArbn_HwTq_low_neg_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_low_neg_fp = cal_BYD_SA2FL_MotCurrQax_low_neg_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_low_neg_fp = cal_BYD_SA2FL_HwTrq_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_low_neg_fp = cal_BYD_SA2FL_MotTq_low_neg_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_low_neg_fp = cal_GWM_A0607_MotCurrQax_low_neg_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_low_neg_fp = cal_GWM_A0607_HwTrq_fp / 10.0;
+        cal_GWM_A0607_MotTq_low_neg_fp = cal_GWM_A0607_MotTq_low_neg_fp / 10.0;
 
 
 // ------------------------------------------------------------- Step 5a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
@@ -10530,9 +10645,9 @@ ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 1000;  // wait 500 mS, wait for system to stabilize
         while(system_msec_clock < system_msec_clock_temp);
 
-        cal_BYD_SA2FL_MotCurrQax_med_pos_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_med_pos_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_med_pos_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp = 0.0;
+        cal_GWM_A0607_MotTq_med_pos_fp = 0.0;
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
         {
@@ -10542,7 +10657,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10552,18 +10667,18 @@ ShiftCAN1();
 //      cal_MotCurrQax_med_pos_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_med_pos_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_med_pos_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_med_pos_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_med_pos_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_med_pos_fp += can_GWM_A0607_MotTq_fp;
 
         }
 
 //      cal_MotCurrQax_med_pos_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_med_pos_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_med_pos_fp = cal_BYD_SA2FL_MotCurrQax_med_pos_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp = cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_med_pos_fp = cal_BYD_SA2FL_MotTq_med_pos_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_med_pos_fp = cal_GWM_A0607_MotCurrQax_med_pos_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp = cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp / 10.0;
+        cal_GWM_A0607_MotTq_med_pos_fp = cal_GWM_A0607_MotTq_med_pos_fp / 10.0;
 
 // ------------------------------------------------------------- Step 6a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 6a    Just finished sent_data_array_pos_1p00nm\r\n");
@@ -10602,9 +10717,9 @@ ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 1000;  // wait 500 mS, wait for system to stabilize
         while(system_msec_clock < system_msec_clock_temp);
 
-        cal_BYD_SA2FL_MotCurrQax_med_neg_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_med_neg_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_med_neg_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp = 0.0;
+        cal_GWM_A0607_MotTq_med_neg_fp = 0.0;
 
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
@@ -10614,7 +10729,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10623,17 +10738,17 @@ ShiftCAN1();
 
 //      cal_MotCurrQax_med_neg_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_med_neg_fp = can_HwTqArbn_HwTq_fp;
-        cal_BYD_SA2FL_MotCurrQax_med_neg_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_med_neg_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_med_neg_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_med_neg_fp += can_GWM_A0607_MotTq_fp;
 
         }
 //      cal_MotCurrQax_med_neg_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_med_neg_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_med_neg_fp = cal_BYD_SA2FL_MotCurrQax_med_neg_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp = cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_med_neg_fp = cal_BYD_SA2FL_MotTq_med_neg_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_med_neg_fp = cal_GWM_A0607_MotCurrQax_med_neg_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp = cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp / 10.0;
+        cal_GWM_A0607_MotTq_med_neg_fp = cal_GWM_A0607_MotTq_med_neg_fp / 10.0;
 
 // ------------------------------------------------------------- Step 7a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 7a    Just finished sent_data_array_neg_1p00nm\r\n");
@@ -10673,9 +10788,9 @@ ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 1000;  // wait 500 mS, wait for system to stabilize
         while(system_msec_clock < system_msec_clock_temp);
 
-        cal_BYD_SA2FL_MotCurrQax_high_pos_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_high_pos_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_high_pos_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp = 0.0;
+        cal_GWM_A0607_MotTq_high_pos_fp = 0.0;
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
         {
@@ -10685,7 +10800,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10696,15 +10811,15 @@ ShiftCAN1();
 //      cal_MotCurrQax_high_pos_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_high_pos_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_high_pos_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_high_pos_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_high_pos_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_high_pos_fp += can_GWM_A0607_MotTq_fp;
 
         }
 
-        cal_BYD_SA2FL_MotCurrQax_high_pos_fp = cal_BYD_SA2FL_MotCurrQax_high_pos_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp = cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_high_pos_fp = cal_BYD_SA2FL_MotTq_high_pos_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_high_pos_fp = cal_GWM_A0607_MotCurrQax_high_pos_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp = cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp / 10.0;
+        cal_GWM_A0607_MotTq_high_pos_fp = cal_GWM_A0607_MotTq_high_pos_fp / 10.0;
 
 // ------------------------------------------------------------- Step 8a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 8a    Just finished sent_data_array_pos_2p00nm\r\n");
@@ -10744,9 +10859,9 @@ ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 1000;  // wait 500 mS, wait for system to stabilize
         while(system_msec_clock < system_msec_clock_temp);
 
-        cal_BYD_SA2FL_MotCurrQax_high_neg_fp = 0.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp = 0.0;
-        cal_BYD_SA2FL_MotTq_high_neg_fp = 0.0;
+        cal_GWM_A0607_MotCurrQax_high_neg_fp = 0.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp = 0.0;
+        cal_GWM_A0607_MotTq_high_neg_fp = 0.0;
 
 for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque and Handwheel Torque
         {
@@ -10756,7 +10871,7 @@ for(loop_cnt_d=0;loop_cnt_d < 10;loop_cnt_d++)      // averaging Motor Torque an
         can1_request_index = 0; // set index to start sequence at case 0 in ISR
 ShiftCAN1();
         system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-        while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
+        while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS last CAN reads are done, move on */
 
         parse_can1_data();
 
@@ -10767,18 +10882,18 @@ ShiftCAN1();
 //      cal_HwTqArbn_HwTq_high_neg_fp = can_HwTqArbn_HwTq_fp;
 
 
-        cal_BYD_SA2FL_MotCurrQax_high_neg_fp += can_BYD_SA2FL_MotCurrQax_fp;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp += can_BYD_SA2FL_HwTrq_fp;
-        cal_BYD_SA2FL_MotTq_high_neg_fp += can_BYD_SA2FL_MotTq_fp;
+        cal_GWM_A0607_MotCurrQax_high_neg_fp += can_GWM_A0607_MotCurrQax_fp;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp += can_GWM_A0607_HwTrq_fp;
+        cal_GWM_A0607_MotTq_high_neg_fp += can_GWM_A0607_MotTq_fp;
 
         }
 
 //      cal_MotCurrQax_high_neg_fp = can_MotCurrQax_fp;
 //      cal_HwTqArbn_HwTq_high_neg_fp = can_HwTqArbn_HwTq_fp;
 
-        cal_BYD_SA2FL_MotCurrQax_high_neg_fp = cal_BYD_SA2FL_MotCurrQax_high_neg_fp / 10.0;
-        cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp = cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp / 10.0;
-        cal_BYD_SA2FL_MotTq_high_neg_fp = cal_BYD_SA2FL_MotTq_high_neg_fp / 10.0;
+        cal_GWM_A0607_MotCurrQax_high_neg_fp = cal_GWM_A0607_MotCurrQax_high_neg_fp / 10.0;
+        cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp = cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp / 10.0;
+        cal_GWM_A0607_MotTq_high_neg_fp = cal_GWM_A0607_MotTq_high_neg_fp / 10.0;
 
 // ------------------------------------------------------------- Step 9a - Return torque to 0.0Nm before next step (found issues with major torques changes, causing DCTs)  \/
         strcpy(sbuf_tx_main,"\nI'm at -- S T E P 9a    Just finished sent_data_array_neg_2p00nm\r\n");
@@ -10820,16 +10935,16 @@ ShiftCAN1();
         /*  69 parameters + DTCs  -- full unused with N_A_num.       */
 
         sprintf(return_message,"%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,",\
-                cal_BYD_SA2FL_BattVltg_fp,cal_BYD_SA2FL_SystemState_byt,\
-                cal_BYD_SA2FL_HwTq0Meas_HwTq4_fp,cal_BYD_SA2FL_HwTq1Meas_HwTq5_fp,\
-                cal_BYD_SA2FL_MotHwPosn_fp,cal_BYD_SA2FL_MotTq_fp,\
-                cal_BYD_SA2FL_MotCurrQax_fp,cal_BYD_SA2FL_HwTrq_fp,\
-                cal_BYD_SA2FL_MotMagTestim_fp,cal_BYD_SA2FL_ECUTFilt_fp);      //10
+                cal_GWM_A0607_BattVltg_fp,cal_GWM_A0607_SystemState_byt,\
+                cal_GWM_A0607_HwTq0Meas_HwTq4_fp,cal_GWM_A0607_HwTq1Meas_HwTq5_fp,\
+                cal_GWM_A0607_MotHwPosn_fp,cal_GWM_A0607_MotTq_fp,\
+                cal_GWM_A0607_MotCurrQax_fp,cal_GWM_A0607_HwTrq_fp,\
+                cal_GWM_A0607_MotMagTestim_fp,cal_GWM_A0607_ECUTFilt_fp);      //10
         /* <23 at a time */
 
         sprintf(temp_return_message,"%.3f,%.3f,%.3f,%d,%d,%d,%d,%d,%d,%d,",\
-                cal_BYD_SA2FL_MotCurrQax_low_pos_fp,cal_BYD_SA2FL_MotCurrQax_med_pos_fp,\
-                cal_BYD_SA2FL_MotCurrQax_high_pos_fp,N_A_num,\
+                cal_GWM_A0607_MotCurrQax_low_pos_fp,cal_GWM_A0607_MotCurrQax_med_pos_fp,\
+                cal_GWM_A0607_MotCurrQax_high_pos_fp,N_A_num,\
                 N_A_num,N_A_num,\
                 N_A_num,N_A_num,\
                 N_A_num,N_A_num);  //10
@@ -10837,18 +10952,18 @@ ShiftCAN1();
         strcat(return_message,temp_return_message);
 
         sprintf(temp_return_message,"%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,",\
-                cal_BYD_SA2FL_MotCurrQax_low_neg_fp,cal_BYD_SA2FL_MotCurrQax_med_neg_fp,\
-                cal_BYD_SA2FL_MotCurrQax_high_neg_fp,cal_BYD_SA2FL_HwTqArbn_HwTq_low_pos_fp,\
-                cal_BYD_SA2FL_HwTqArbn_HwTq_med_pos_fp,cal_BYD_SA2FL_HwTqArbn_HwTq_high_pos_fp,\
-                cal_BYD_SA2FL_HwTqArbn_HwTq_low_neg_fp,cal_BYD_SA2FL_HwTqArbn_HwTq_med_neg_fp,\
-                cal_BYD_SA2FL_HwTqArbn_HwTq_high_neg_fp);    //9
+                cal_GWM_A0607_MotCurrQax_low_neg_fp,cal_GWM_A0607_MotCurrQax_med_neg_fp,\
+                cal_GWM_A0607_MotCurrQax_high_neg_fp,cal_GWM_A0607_HwTqArbn_HwTq_low_pos_fp,\
+                cal_GWM_A0607_HwTqArbn_HwTq_med_pos_fp,cal_GWM_A0607_HwTqArbn_HwTq_high_pos_fp,\
+                cal_GWM_A0607_HwTqArbn_HwTq_low_neg_fp,cal_GWM_A0607_HwTqArbn_HwTq_med_neg_fp,\
+                cal_GWM_A0607_HwTqArbn_HwTq_high_neg_fp);    //9
 
         strcat(return_message,temp_return_message);
 
         sprintf(temp_return_message,"%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,",\
-                cal_BYD_SA2FL_MotTq_low_pos_fp,cal_BYD_SA2FL_MotTq_med_pos_fp,\
-                cal_BYD_SA2FL_MotTq_high_pos_fp,cal_BYD_SA2FL_MotTq_low_neg_fp,\
-                cal_BYD_SA2FL_MotTq_med_neg_fp,cal_BYD_SA2FL_MotTq_high_neg_fp);  //6
+                cal_GWM_A0607_MotTq_low_pos_fp,cal_GWM_A0607_MotTq_med_pos_fp,\
+                cal_GWM_A0607_MotTq_high_pos_fp,cal_GWM_A0607_MotTq_low_neg_fp,\
+                cal_GWM_A0607_MotTq_med_neg_fp,cal_GWM_A0607_MotTq_high_neg_fp);  //6
 
         strcat(return_message,temp_return_message);
 
@@ -10914,7 +11029,7 @@ ShiftCAN1();
 //      speed_flag = 0;       // set current to 0 amps for FORD -- don't use warm init (-1)
                              // because it makes 'main' do OSV measure until speed > -1  NO OSV
         break;
-        }   // end case TARGET_BYD_SA2FL
+        }   // end case TARGET_GWM_A0607
 
         case TARGET_C1XX:
         {
@@ -17369,7 +17484,7 @@ debug_can2_Qax[loop_cnt_d] = can1_FORD_T3_ECU2_MtrCurrQax_fp;
              cal1_FAAR_WE_LoaSca_fp                     =  fray1_FAAR_WE_LoaSca_fp;                  // fray1_dump_err_data 14        Derating Vector
              cal1_FAAR_WE_EcuTMeas_fp                   =  fray1_FAAR_WE_EcuTMeas_fp;                // fray1_dump_err_data 15        Board Temp
              cal1_FAAR_WE_MotWidgT_fp                   =  fray1_FAAR_WE_MotWidgT_fp;                // fray1_dump_err_data 16        Estimated Motor Winding Temp
-             cal1_FAAR_WE_MotMagT_fp                    =  fray1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimated Magnet Temp
+             cal1_FAAR_WE_MotMagT_fp                    =  fray1_FAAR_WE_MotMagT_fp;                 // fray1_dump_err_data 17        Estimatedï¿½Magnet Temp
              cal1_FAAR_WE_MotFetT_fp                    =  fray1_FAAR_WE_MotFetT_fp;                 // fray1_dump_err_data 18        Estimated FET Temp
 
 
@@ -17800,7 +17915,9 @@ void    ShiftCAN1   ( void )
     case TARGET_9BXX:
         canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
     break;
-
+    case TARGET_GWM_A0607:
+        canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);  
+    break;
     case TARGET_FCA_ADAS:
         canTransmit(canREG1, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
     break;
@@ -17843,7 +17960,9 @@ void    ShiftCAN2   ( void )
     case TARGET_9BXX:
         canTransmit(canREG2, CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
     break;
-
+    case TARGET_GWM_A0607:
+        canTransmit(canREG2, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);   
+    break;
     case TARGET_FCA_ADAS:
         canTransmit(canREG2, FCA_CCP_REQUEST_ID, ( uint8 *) ccp_request_connect);
     break;
@@ -17908,6 +18027,13 @@ void get_DTCs1(void)
 
     break;
 
+    case TARGET_GWM_A0607:
+            canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
+
+            system_msec_clock_temp = system_msec_clock + 500;   // set time out to 500mS for rev2 5/09/13 WAS 150ms normally
+            while((ECU1_XCP_reply_index < 14) && (system_msec_clock < system_msec_clock_temp));       // changed to <14 from 12 for NEW 5 byte DTCs number
+
+    break;
     case TARGET_C1XX:
     case TARGET_9BXX:
         canTransmit(canREG1, XCP_EA3_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
@@ -18003,7 +18129,7 @@ void get_DTCs1(void)
     {
 // T1XX is special, DCTs are located later in the dump string.
     case TARGET_T1XX:
-    case TARGET_BYD_SA2FL:
+    case TARGET_GWM_A0607:
     {
     // rows 39-42 DTCs 1-4  47-50
     sprintf(dtc1_return_message,\
@@ -18167,6 +18293,7 @@ void get_DTCs2(void)
     break;
 
     case TARGET_BYD_SA2FL:       //BYD_SA2FL has no ECU2
+    case TARGET_GWM_A0607:       //GWM_A0607 has no ECU2
 //          canTransmit(canREG2, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);    // open Nexteer session prior to XCP
     break;
 
@@ -18246,6 +18373,7 @@ void get_DTCs2(void)
     }
 
     case TARGET_BYD_SA2FL:
+    case TARGET_GWM_A0607:
     {
 
     break;
@@ -18477,7 +18605,7 @@ void trig( void )
         }   /* end else if(ign1_status > OFF)   ---  if(ign_on_flag == TRUE) */
     break;
     }
-    case TARGET_BYD_SA2FL:
+    case TARGET_GWM_A0607:
     {
         if(ign1_status > OFF)   /* ok to talk CAN and dump true data, if not, dump zeros */
         {
@@ -18486,29 +18614,29 @@ void trig( void )
             ShiftCAN1();                //send connect message
 
             system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-            while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS, last CAN reads are done, move on */
+            while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS, last CAN reads are done, move on */
 
         // second try at CAN communications if needed
-            if(can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS)
+            if(can1_request_index != GWM_A0607_CAN_DATA_REQUESTS)
             {
 
                 can1_request_index = 0; // set index to start sequence at case 0 in ISR
                 ShiftCAN1();                //send CAN1 connect message
 
                 system_msec_clock_temp = system_msec_clock + 300;   // set time out to 150mS
-                while((can1_request_index != BYD_SA2FL_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS ,last CAN reads are done, move on */
+                while((can1_request_index != GWM_A0607_CAN_DATA_REQUESTS) && (system_msec_clock < system_msec_clock_temp)); /* at CAN_DATA_REQUESTS ,last CAN reads are done, move on */
             }
 
-            if(can1_request_index == BYD_SA2FL_CAN_DATA_REQUESTS)    /* CAN dump was ok, else we timed out- product did not respond */
+            if(can1_request_index == GWM_A0607_CAN_DATA_REQUESTS)    /* CAN dump was ok, else we timed out- product did not respond */
             {
                 parse_can1_data();
 
-                if(can_BYD_SA2FL_SystemState_byt == 0xcc00)  /* State = shutdown */
-                                fault1_cnt = 1;
-                if(can_BYD_SA2FL_SystemState_byt == 0x3304)  /* State = soft disable */
-                    fault2_cnt = 1;
-                if(can_BYD_SA2FL_SystemState_byt == 0x3308)  /* State = hard disable */
-                    fault3_cnt = 1;
+ //               if(can_BYD_SA2FL_SystemState_byt == 0xcc00)  /* State = shutdown */
+ //                              fault1_cnt = 1;
+ //               if(can_BYD_SA2FL_SystemState_byt == 0x3304)  /* State = soft disable */
+ //                   fault2_cnt = 1;
+ //               if(can_BYD_SA2FL_SystemState_byt == 0x3308)  /* State = hard disable */
+//                    fault3_cnt = 1;
                 sprintf(return_message,\
         "err,%s,%d,%d,%d,%d,%d,%d,T%d,0,%d,1,%d,2,%d:%d:%d:%d,3,%d,4,%d,5,%d,6,%d,7,%d,8,%d,9,%d,10,%d,11,%d,12,%d,13,%d,14,%d,",\
 
@@ -18524,15 +18652,15 @@ void trig( void )
                 value_sent6_ChA_T2_cnt,value_sent7_ChB_T1_cnt,\
                 value_sent8_ChB_T2_cnt,value_sent1_Adr0_ChA0_Pos_cnt,\
                 value_sent2_Adr0_ChB0_Pos_cnt,value_sent3_Adr1_ChA1_Pos_cnt,\
-                value_sent4_Adr1_ChB1_Pos_cnt,can_BYD_SA2FL_SystemState_byt);
+                value_sent4_Adr1_ChB1_Pos_cnt,can_GWM_A0607_SystemState_byt);
 
                 sprintf(temp_return_message,\
         "15,%.3f,16,%.3f,17,%.3f,18,%.3f,19,%.3f,20,%.3f,21,%.3f,22,%.3f,23,%.3f,24,%s,25,%s,26,%s,27,%s,28,%s,29,%s,30,%s,31,%s,32,%s,33,%s,34,%s,35,%s,36,%s,37,%s,38,%s,",\
-                can_BYD_SA2FL_MotCurrQax_fp,can_BYD_SA2FL_HwTq0Meas_HwTq4_fp,\
-                can_BYD_SA2FL_HwTq1Meas_HwTq5_fp,can_BYD_SA2FL_MotHwPosn_fp,\
-                can_BYD_SA2FL_BattVltg_fp,can_BYD_SA2FL_MotTq_fp,\
-                can_BYD_SA2FL_HwTrq_fp,can_BYD_SA2FL_MotMagTestim_fp,\
-                can_BYD_SA2FL_ECUTFilt_fp,N_A_str,\
+                can_GWM_A0607_MotCurrQax_fp,can_GWM_A0607_HwTq0Meas_HwTq4_fp,\
+                can_GWM_A0607_HwTq1Meas_HwTq5_fp,can_GWM_A0607_MotHwPosn_fp,\
+                can_GWM_A0607_BattVltg_fp,can_GWM_A0607_MotTq_fp,\
+                can_GWM_A0607_HwTrq_fp,can_GWM_A0607_MotMagTestim_fp,\
+                can_GWM_A0607_ECUTFilt_fp,N_A_str,\
                 N_A_str,N_A_str,\
                 N_A_str,N_A_str,\
                 N_A_str,N_A_str,\
@@ -18547,9 +18675,9 @@ void trig( void )
 
         "39,%s,40,%s,41,%.3f,42,%.3f,43,%.3f,44,%.3f,45,%.3f,46,%.3f,",\
                 N_A_str,N_A_str,\
-                can_BYD_SA2FL_MotCurrQax1_fp,can_BYD_SA2FL_MotCurrQax2_fp,\
-                can_BYD_SA2FL_MotCurrQax3_fp,can_BYD_SA2FL_HwTqArbn_HwTq1_fp,\
-                can_BYD_SA2FL_HwTqArbn_HwTq2_fp,can_BYD_SA2FL_HwTqArbn_HwTq3_fp);
+                can_GWM_A0607_MotCurrQax1_fp,can_GWM_A0607_MotCurrQax2_fp,\
+                can_GWM_A0607_MotCurrQax3_fp,can_GWM_A0607_HwTqArbn_HwTq1_fp,\
+                can_GWM_A0607_HwTqArbn_HwTq2_fp,can_GWM_A0607_HwTqArbn_HwTq3_fp);
 
                 strcat(return_message,temp_return_message);
 
@@ -20528,13 +20656,13 @@ void dump( void )
         can_T1XX_HwTqArbn_HwTq2_fp = -100;
         can_T1XX_HwTqArbn_HwTq3_fp = -100;
 
-        can_BYD_SA2FL_MotCurrQax1_fp = -100;  // init Hcurr Qax reads to -100 ..also set back after a dumperr. Only changed during Hcurr command.
-        can_BYD_SA2FL_MotCurrQax2_fp = -100;
-        can_BYD_SA2FL_MotCurrQax3_fp = -100;
+        can_GWM_A0607_MotCurrQax1_fp = -100;  // init Hcurr Qax reads to -100 ..also set back after a dumperr. Only changed during Hcurr command.
+        can_GWM_A0607_MotCurrQax2_fp = -100;
+        can_GWM_A0607_MotCurrQax3_fp = -100;
 
-        can_BYD_SA2FL_HwTqArbn_HwTq1_fp = -100;
-        can_BYD_SA2FL_HwTqArbn_HwTq2_fp = -100;
-        can_BYD_SA2FL_HwTqArbn_HwTq3_fp = -100;
+        can_GWM_A0607_HwTqArbn_HwTq1_fp = -100;
+        can_GWM_A0607_HwTqArbn_HwTq2_fp = -100;
+        can_GWM_A0607_HwTqArbn_HwTq3_fp = -100;
 
         can1_G2KCA_MtrCurrQax1_fp = -100;       // init Qax reads to -100 ..also set back after a dumperr
         can1_G2KCA_MtrCurrQax2_fp = -100;
@@ -20858,18 +20986,18 @@ void parse_can1_data(void)
 
         break;  // end case TARGET_T1XX:
 
-        case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         //      changed order for little Eindian RenSys processor, resulting in memcpy directly into floating point variable, which allows dumperr string to output true floats  ex: "12.47" (new style)
-            itemR_1:    can_BYD_SA2FL_SystemState_byt = can1_dump_err_data[1][1];
-            itemR_2:    swap[0]= can1_dump_err_data[2][4];swap[1]= can1_dump_err_data[2][3];swap[2]= can1_dump_err_data[2][2];swap[3]= can1_dump_err_data[2][1];memcpy(&can_BYD_SA2FL_MotCurrQax_fp, swap,4);
-            itemR_3:    swap[0]= can1_dump_err_data[3][4];swap[1]= can1_dump_err_data[3][3];swap[2]= can1_dump_err_data[3][2];swap[3]= can1_dump_err_data[3][1];memcpy(&can_BYD_SA2FL_HwTq0Meas_HwTq4_fp, swap,4);
-            itemR_4:    swap[0]= can1_dump_err_data[4][4];swap[1]= can1_dump_err_data[4][3];swap[2]= can1_dump_err_data[4][2];swap[3]= can1_dump_err_data[4][1];memcpy(&can_BYD_SA2FL_HwTq1Meas_HwTq5_fp, swap,4);
-            itemR_5:    swap[0]= can1_dump_err_data[5][4];swap[1]= can1_dump_err_data[5][3];swap[2]= can1_dump_err_data[5][2];swap[3]= can1_dump_err_data[5][1];memcpy(&can_BYD_SA2FL_MotHwPosn_fp, swap,4);
-            itemR_6:    swap[0]= can1_dump_err_data[6][4];swap[1]= can1_dump_err_data[6][3];swap[2]= can1_dump_err_data[6][2];swap[3]= can1_dump_err_data[6][1];memcpy(&can_BYD_SA2FL_BattVltg_fp, swap,4);
-            itemR_7:    swap[0]= can1_dump_err_data[7][4];swap[1]= can1_dump_err_data[7][3];swap[2]= can1_dump_err_data[7][2];swap[3]= can1_dump_err_data[7][1];memcpy(&can_BYD_SA2FL_MotTq_fp, swap,4);
-            itemR_8:    swap[0]= can1_dump_err_data[8][4];swap[1]= can1_dump_err_data[8][3];swap[2]= can1_dump_err_data[8][2];swap[3]= can1_dump_err_data[8][1];memcpy(&can_BYD_SA2FL_HwTrq_fp, swap,4);
-            itemR_9:    swap[0]= can1_dump_err_data[9][4];swap[1]= can1_dump_err_data[9][3];swap[2]= can1_dump_err_data[9][2];swap[3]= can1_dump_err_data[9][1];memcpy(&can_BYD_SA2FL_MotMagTestim_fp, swap,4);
-            itemR_10:   swap[0]= can1_dump_err_data[10][4];swap[1]= can1_dump_err_data[10][3];swap[2]= can1_dump_err_data[10][2];swap[3]= can1_dump_err_data[10][1];memcpy(&can_BYD_SA2FL_ECUTFilt_fp, swap,4);
+            itemR_1:    can_GWM_A0607_SystemState_byt = can1_dump_err_data[1][1];
+            itemR_2:    swap[0]= can1_dump_err_data[2][4];swap[1]= can1_dump_err_data[2][3];swap[2]= can1_dump_err_data[2][2];swap[3]= can1_dump_err_data[2][1];memcpy(&can_GWM_A0607_MotCurrQax_fp, swap,4);
+            itemR_3:    swap[0]= can1_dump_err_data[3][4];swap[1]= can1_dump_err_data[3][3];swap[2]= can1_dump_err_data[3][2];swap[3]= can1_dump_err_data[3][1];memcpy(&can_GWM_A0607_HwTq0Meas_HwTq4_fp, swap,4);
+            itemR_4:    swap[0]= can1_dump_err_data[4][4];swap[1]= can1_dump_err_data[4][3];swap[2]= can1_dump_err_data[4][2];swap[3]= can1_dump_err_data[4][1];memcpy(&can_GWM_A0607_HwTq1Meas_HwTq5_fp, swap,4);
+            itemR_5:    swap[0]= can1_dump_err_data[5][4];swap[1]= can1_dump_err_data[5][3];swap[2]= can1_dump_err_data[5][2];swap[3]= can1_dump_err_data[5][1];memcpy(&can_GWM_A0607_MotHwPosn_fp, swap,4);
+            itemR_6:    swap[0]= can1_dump_err_data[6][4];swap[1]= can1_dump_err_data[6][3];swap[2]= can1_dump_err_data[6][2];swap[3]= can1_dump_err_data[6][1];memcpy(&can_GWM_A0607_BattVltg_fp, swap,4);
+            itemR_7:    swap[0]= can1_dump_err_data[7][4];swap[1]= can1_dump_err_data[7][3];swap[2]= can1_dump_err_data[7][2];swap[3]= can1_dump_err_data[7][1];memcpy(&can_GWM_A0607_MotTq_fp, swap,4);
+            itemR_8:    swap[0]= can1_dump_err_data[8][4];swap[1]= can1_dump_err_data[8][3];swap[2]= can1_dump_err_data[8][2];swap[3]= can1_dump_err_data[8][1];memcpy(&can_GWM_A0607_HwTrq_fp, swap,4);
+            itemR_9:    swap[0]= can1_dump_err_data[9][4];swap[1]= can1_dump_err_data[9][3];swap[2]= can1_dump_err_data[9][2];swap[3]= can1_dump_err_data[9][1];memcpy(&can_GWM_A0607_MotMagTestim_fp, swap,4);
+            itemR_10:   swap[0]= can1_dump_err_data[10][4];swap[1]= can1_dump_err_data[10][3];swap[2]= can1_dump_err_data[10][2];swap[3]= can1_dump_err_data[10][1];memcpy(&can_GWM_A0607_ECUTFilt_fp, swap,4);
 
 /*          itemR_2000: swap[0]=can1_dump_err_data[11][4];swap[1]=can1_dump_err_data[28][3];swap[2]=can1_dump_err_data[11][2];swap[3]=can1_dump_err_data[11][1];memcpy(&can_BYD_SA2FL_MotCurrQax1_fp, swap,4);
             itemR_2001: swap[0]=can1_dump_err_data[12][4];swap[1]=can1_dump_err_data[29][3];swap[2]=can1_dump_err_data[12][2];swap[3]=can1_dump_err_data[12][1];memcpy(&can_BYD_SA2FL_HwTqArbn_HwTq1_fp, swap,4);
@@ -20878,15 +21006,15 @@ void parse_can1_data(void)
             itemR_2020: swap[0]=can1_dump_err_data[15][4];swap[1]=can1_dump_err_data[32][3];swap[2]=can1_dump_err_data[15][2];swap[3]=can1_dump_err_data[15][1];memcpy(&can_BYD_SA2FL_MotCurrQax3_fp, swap,4);
             itemR_2021: swap[0]=can1_dump_err_data[16][4];swap[1]=can1_dump_err_data[33][3];swap[2]=can1_dump_err_data[16][2];swap[3]=can1_dump_err_data[16][1];memcpy(&can_BYD_SA2FL_HwTqArbn_HwTq3_fp, swap,4);
 */
-            itemR_2000: swap[0]=can1_dump_err_data[11][4];swap[1]=can1_dump_err_data[11][3];swap[2]=can1_dump_err_data[11][2];swap[3]=can1_dump_err_data[11][1];memcpy(&can_BYD_SA2FL_MotCurrQax1_fp, swap,4);
-            itemR_2001: swap[0]=can1_dump_err_data[12][4];swap[1]=can1_dump_err_data[12][3];swap[2]=can1_dump_err_data[12][2];swap[3]=can1_dump_err_data[12][1];memcpy(&can_BYD_SA2FL_HwTqArbn_HwTq1_fp, swap,4);
-            itemR_2010: swap[0]=can1_dump_err_data[13][4];swap[1]=can1_dump_err_data[13][3];swap[2]=can1_dump_err_data[13][2];swap[3]=can1_dump_err_data[13][1];memcpy(&can_BYD_SA2FL_MotCurrQax2_fp, swap,4);
-            itemR_2011: swap[0]=can1_dump_err_data[14][4];swap[1]=can1_dump_err_data[14][3];swap[2]=can1_dump_err_data[14][2];swap[3]=can1_dump_err_data[14][1];memcpy(&can_BYD_SA2FL_HwTqArbn_HwTq2_fp, swap,4);
-            itemR_2020: swap[0]=can1_dump_err_data[15][4];swap[1]=can1_dump_err_data[15][3];swap[2]=can1_dump_err_data[15][2];swap[3]=can1_dump_err_data[15][1];memcpy(&can_BYD_SA2FL_MotCurrQax3_fp, swap,4);
-            itemR_2021: swap[0]=can1_dump_err_data[16][4];swap[1]=can1_dump_err_data[16][3];swap[2]=can1_dump_err_data[16][2];swap[3]=can1_dump_err_data[16][1];memcpy(&can_BYD_SA2FL_HwTqArbn_HwTq3_fp, swap,4);
+            itemR_2000: swap[0]=can1_dump_err_data[11][4];swap[1]=can1_dump_err_data[11][3];swap[2]=can1_dump_err_data[11][2];swap[3]=can1_dump_err_data[11][1];memcpy(&can_GWM_A0607_MotCurrQax1_fp, swap,4);
+            itemR_2001: swap[0]=can1_dump_err_data[12][4];swap[1]=can1_dump_err_data[12][3];swap[2]=can1_dump_err_data[12][2];swap[3]=can1_dump_err_data[12][1];memcpy(&can_GWM_A0607_HwTqArbn_HwTq1_fp, swap,4);
+            itemR_2010: swap[0]=can1_dump_err_data[13][4];swap[1]=can1_dump_err_data[13][3];swap[2]=can1_dump_err_data[13][2];swap[3]=can1_dump_err_data[13][1];memcpy(&can_GWM_A0607_MotCurrQax2_fp, swap,4);
+            itemR_2011: swap[0]=can1_dump_err_data[14][4];swap[1]=can1_dump_err_data[14][3];swap[2]=can1_dump_err_data[14][2];swap[3]=can1_dump_err_data[14][1];memcpy(&can_GWM_A0607_HwTqArbn_HwTq2_fp, swap,4);
+            itemR_2020: swap[0]=can1_dump_err_data[15][4];swap[1]=can1_dump_err_data[15][3];swap[2]=can1_dump_err_data[15][2];swap[3]=can1_dump_err_data[15][1];memcpy(&can_GWM_A0607_MotCurrQax3_fp, swap,4);
+            itemR_2021: swap[0]=can1_dump_err_data[16][4];swap[1]=can1_dump_err_data[16][3];swap[2]=can1_dump_err_data[16][2];swap[3]=can1_dump_err_data[16][1];memcpy(&can_GWM_A0607_HwTqArbn_HwTq3_fp, swap,4);
 
 
-        break;  // end case TARGET_BYD_SA2FL:
+        break;  // end case TARGET_GWM_A0607:
 
         case TARGET_FORD_T3_T6:
             itemO_1:   swap[0]=can1_dump_err_data[1][4];swap[1]=can1_dump_err_data[1][3];swap[2]=can1_dump_err_data[1][2];swap[3]=can1_dump_err_data[1][1];memcpy(&can1_FORD_T3_ECU1_BattVltg_fp, swap,4);
@@ -21135,6 +21263,7 @@ void parse_can2_data(void)
         break;  // end case TARGET_T1XX:
 
         case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         //      changed order for little Eindian RenSys processor, resulting in memcpy directly into floating point variable, which allows dumperr string to output true floats  ex: "12.47" (new style)
 
         break;  // end case TARGET_BYD_SA2FL:
@@ -21702,6 +21831,18 @@ void set_torque_TOC_or_SENT_or_Analog()
                 break;
             }
             case TARGET_BYD_SA2FL:
+            {
+                canTransmit(canREG1, XCP_EA3_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);
+                system_msec_clock_temp = system_msec_clock + 150;   // set time out to 150mS
+
+                while((ECU1_XCP_reply_index != 0) && (system_msec_clock < system_msec_clock_temp));
+
+                ECU1_XCP_reply_index = 100;  // make it happen index
+
+                break;
+            }
+
+            case TARGET_GWM_A0607:
             {
                 canTransmit(canREG1, XCP_EA3_REQUEST_ID, ( uint8 *) xcp_write_session_Nexteer_mode);
                 system_msec_clock_temp = system_msec_clock + 150;   // set time out to 150mS
@@ -22455,6 +22596,7 @@ void set_torque_TOC_or_SENT_or_Analog()
             }   // end case TARGET_PSA_CMP
 
             case TARGET_BYD_SA2FL:
+            case TARGET_GWM_A0607:
             {
                 switch(torque_value_case_index)
                 {

@@ -232,11 +232,13 @@
 #define TARGET_EHPS 18
 #define TARGET_SGMW_CN300 19
 #define TARGET_BYD_SA2FL 20
+#define TARGET_GWM_A0607 21
 
 
 /*  ------------- CAN_DATA_REQUESTS  :: Set for number CAN variable request   T1XX = 28   C1XX = 18    B9XX = 36    FCA = 18 -------  */
 #define T1XX_CAN_DATA_REQUESTS 28                    /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define BYD_SA2FL_CAN_DATA_REQUESTS 11                 /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
+#define GWM_A0607_CAN_DATA_REQUESTS 11                 /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define C1XX_CAN_DATA_REQUESTS 18                    /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define GM_9BXX_CAN_DATA_REQUESTS 36                 /* Used for can1_request_index != can_index_value (previously just a #). Created for easier updating of code */
 #define FCA_ADAS_CAN_DATA_REQUESTS 9                 /* Used for canX_request_index != can_index_value (previously just a #). Created for easier updating of code */
@@ -721,6 +723,39 @@ extern int high_torque_timer_counter; // counter for 10 seconds. counts down in 
 
 /******************************************************************************************************************************/
 
+// C A N  1  --  G W M A 0 6 07  Products
+#define PROD_MESS1_ID               canMESSAGE_BOX1    // 0x148   11bit identifier-- Rec Response from EPS (not used)
+#define PROD_MESS2_ID               canMESSAGE_BOX2    // 0x778   11bit identifier-- Rec ON Star from EPS (not used)
+#define CCP_Engine_Run              canMESSAGE_BOX3    // 0x271   11bit identifier-- Trans Engine ON to EPS // ECM2 (MSG ID $271)(CAN)
+#define GWM_A0607_CCP_Vehspd_ID     canMESSAGE_BOX4    // 0x265   11bit identifier-- Trans Speed to EPS  // ABS3 (MSG ID $265)(CAN)
+#define GWM_A0607_CCP_Endspd_ID     canMESSAGE_BOX5    // 0x348   11bit identifier-- Trans EngSpd to EPS      // ECM1 (MSG ID $111)(CAN)
+
+#define GWM_A0607_CCP_RESPONSE_ID   canMESSAGE_BOX7    // 0x63D   11bit identifier-- Rec CCP Response from EPS for Data
+#define GWM_A0607_CCP_REQUEST_ID    canMESSAGE_BOX6    // 0x63C   11bit identifier-- Trans CCP Request for Data to EPS
+//#define XCP_EA3_REQUEST_ID        canMESSAGE_BOX8    // 0x242   11bit identifier-- Trans XCP Request from EPS for data
+//#define XCP_EA3_RESPONSE_ID       canMESSAGE_BOX9    // 0x642   11bit identifier-- Rec XCP Response to EPS for data
+#define XCP_EA4_REQUEST_ID          canMESSAGE_BOX10   // 0x712   11bit identifier-- Trans XCP Request from EPS for data
+#define XCP_EA4_RESPONSE_ID         canMESSAGE_BOX11   // 0x710   11bit identifier-- Rec XCP Response to EPS for data
+#define TESTER_REC_DEBUG_ID         canMESSAGE_BOX12   // 0x7FF   11bit identifier-- REC from Anyone
+#define TESTER_TRANS_DEBUG_ID       canMESSAGE_BOX13   // 0x7FE   11bit identifier-- Transmit to Anyone
+
+#define GWM_A0607_CCP_Wss_ID                canMESSAGE_BOX14    // 0x231   11bit identifier-- Trans Wss to EPS      // ABS1 (MSG ID $231) (CAN)
+#define GWM_A0607_CCP_MaxEngTrqNorm_ID      canMESSAGE_BOX15    // 0x371   11bit identifier-- Trans MaxEngTrqNorm to EPS      // ECM3 (MSG ID $371) (CAN)
+#define GWM_A0607_CCP_NetEngTrq_ID          canMESSAGE_BOX16    // 0x082   11bit identifier-- Trans NetEngTrq to EPS      // ECM4 (MSG ID $082) (CAN)
+#define GWM_A0607_CCP_DiagFuncReq_ID        canMESSAGE_BOX17    // 0x760   11bit identifier-- Trans DiagFuncReq to EPS      // DIAG_FUN_REQ (MSG ID $760)
+#define GWM_A0607_CCP_VehYawRate_ID         canMESSAGE_BOX18    // 0x245   11bit identifier-- Trans VehYawRate to EPS      // ABM2 (Msg ID $245) (CAN/CANFD)
+#define GWM_A0607_CCP_SteerWheelAng_ID      canMESSAGE_BOX19    // 0x0A1   11bit identifier-- Trans SteerWheelAng to EPS      // CSA2 (Msg ID $0A1)(CAN/CANFD)
+
+// C A N 2  --  G W M A 0 6 07  Products none are ADAS yet
+
+//#define CCP_CAN2_RESPONSE_ID  canMESSAGE_BOX3    // 0x642   11bit identifier-- Rec XCP Response to EPS for data
+//#define CCP_CAN2_REQUEST_ID   canMESSAGE_BOX4    // 0x242   11bit identifier-- Trans XCP Request from EPS for data
+//#define PERIOD_CAN2_ID        canMESSAGE_BOX5    // 0x182   11bit identifier-- Trans periodic to EPS
+
+/******************************************************************************************************************************/
+
+/******************************************************************************************************************************/
+
 // C A N  1  --  P S A    Products
 #define PSA_PROD_MESS1_ID         canMESSAGE_BOX1    // 0x148   11bit identifier-- Rec Response from EPS (not used)
 #define PSA_PROD_MESS2_ID         canMESSAGE_BOX2    // 0x778   11bit identifier-- Rec ON Star from EPS (not used)
@@ -933,6 +968,48 @@ extern const unsigned char ccp_write_wheel_speed[]; // new for GM ADAS, write to
 extern const unsigned char xcp_write_session_Nexteer_mode[]; // open Nexteer session for manufacturing mode id730
 // this must precede request for DTC's. Session times out approx after 5 seconds.
 // id738 should get reply : 01 50 AA AA AA AA AA AA
+
+/* --------------   G W M A 0 6 0 7   CAN  ------------------------ */
+
+//    extern const uint8 Veh_speed_00_table_GWM_A0607[16][8];
+
+// Set Vehspd = 0 //ABS3 (MSG ID $265)(CAN)
+    extern unsigned char ccp_GWM_A0607_write_Vehspd[];       /* engine_on & speed 0kph 8 bytes*/   
+    extern unsigned char GWM_A0607_Vehspd_CRC_counter;
+    extern unsigned char GWM_A0607_Vehspd_CRC_ChKSum;
+
+// Set EngState = 0x02 //ECM2 (MSG ID $271)(CAN)
+    extern unsigned char ccp_GWM_A0607_write_EngState[];       /* engine_on 8 bytes*/   
+    extern unsigned char GWM_A0607_EngState_CRC_counter;
+    extern unsigned char GWM_A0607_EngState_CRC_ChKSum;
+
+// Set EngSpd = 0 // ECM1 (MSG ID $111)(CAN)
+    extern const unsigned char ccp_GWM_A0607_write_EngSpd[]; /* EngSpd 8 bytes & EngSpdVldty(bit63) 0x1:Valid*/   
+
+// Set Wss = 0 // ABS1 (MSG ID $231) (CAN)
+    extern unsigned char ccp_GWM_A0607_write_Wss[];       /* Wss 8 bytes*/   
+    extern unsigned char GWM_A0607_Wss_CRC_counter;
+    extern unsigned char GWM_A0607_Wss_CRC_ChKSum;
+
+// Set VehYawRate = 0  // ABM2 (Msg ID $245) (CAN/CANFD)
+    extern unsigned char ccp_GWM_A0607_write_VehYawRate[];       /* VehYawRate 8 bytes*/   
+    extern unsigned char GWM_A0607_VehYawRate_CRC_counter;
+    extern unsigned char GWM_A0607_VehYawRate_CRC_ChKSum;
+
+// Set SteerWheelAng =  // CSA2 (Msg ID $0A1)(CAN/CANFD)
+    extern unsigned char ccp_GWM_A0607_write_SteerWheelAng[];       /* SteerWheelAng 8 bytes*/   
+    extern unsigned char GWM_A0607_SteerWheelAng_CRC_counter;
+    extern unsigned char GWM_A0607_SteerWheelAng_CRC_ChKSum;
+
+// Set MaxEngTrqNorm = 0 // ECM3 (MSG ID $371) (CAN)
+    extern unsigned char ccp_GWM_A0607_write_MaxEngTrqNorm[];       /* MaxEngTrqNorm 8 bytes*/   
+    extern unsigned char GWM_A0607_MaxEngTrqNorm_CRC_counter;
+    extern unsigned char GWM_A0607_MaxEngTrqNorm_CRC_ChKSum;
+
+// Set NetEngTrq = 0 // ECM4 (MSG ID $082) (CAN)
+    extern const unsigned char ccp_GWM_A0607_write_NetEngTrq[]; /* NetEngTrq 8 bytes & NetEngTrq = 0 */   
+
+
 
 // ======  Manufacturing services ================
 
@@ -1158,20 +1235,20 @@ extern const unsigned char ccp_T1XX_MotTq_str[]            ;
 
 /*    CAN data requests for T1XX    END  -----------------------------------------------------------------*/
 
-/*    CAN data requests for BYD_SA2FL    START  ----------------------------------------------------------------- */
+/*    CAN data requests for GWM_A0607    START  ----------------------------------------------------------------- */
 
-extern const unsigned char ccp_BYD_SA2FL_SystemState_byt[]     ;
-extern const unsigned char ccp_BYD_SA2FL_MotCurrQax_fp[]       ;
-extern const unsigned char ccp_BYD_SA2FL_HwTq0Meas_HwTq4_fp[]  ;
-extern const unsigned char ccp_BYD_SA2FL_HwTq1Meas_HwTq5_fp[]  ;
-extern const unsigned char ccp_BYD_SA2FL_MotHwPosn_fp[]        ;
-extern const unsigned char ccp_BYD_SA2FL_BattVltg_fp[]         ;
-extern const unsigned char ccp_BYD_SA2FL_MotTq_fp[]            ;
-extern const unsigned char ccp_BYD_SA2FL_HwTrq_fp[]            ;
-extern const unsigned char ccp_BYD_SA2FL_MotMagTestim_fp[]     ;
-extern const unsigned char ccp_BYD_SA2FL_ECUTFilt_fp[]         ;
+extern const unsigned char ccp_GWM_A0607_SystemState_byt[]     ;
+extern const unsigned char ccp_GWM_A0607_MotCurrQax_fp[]       ;
+extern const unsigned char ccp_GWM_A0607_HwTq0Meas_HwTq4_fp[]  ;
+extern const unsigned char ccp_GWM_A0607_HwTq1Meas_HwTq5_fp[]  ;
+extern const unsigned char ccp_GWM_A0607_MotHwPosn_fp[]        ;
+extern const unsigned char ccp_GWM_A0607_BattVltg_fp[]         ;
+extern const unsigned char ccp_GWM_A0607_MotTq_fp[]            ;
+extern const unsigned char ccp_GWM_A0607_HwTrq_fp[]            ;
+extern const unsigned char ccp_GWM_A0607_MotMagTestim_fp[]     ;
+extern const unsigned char ccp_GWM_A0607_ECUTFilt_fp[]         ;
 
-/*    CAN data requests for BYD_SA2FL    END  -----------------------------------------------------------------*/
+/*    CAN data requests for GWM_A0607    END  -----------------------------------------------------------------*/
 
 /* --------------   9 B x x     CAN  ------------------------
 // CAN data for each of the CCP requests, do memcpy to CAN message obj &data
@@ -1619,8 +1696,29 @@ extern uint8 xcp_dynamic_rx_data[256];
 extern int read_variables_flag;
 // -----------------------------------------End of BMW XCP Fast Rate Vars -----------------------------------------------------------------------//
 
+//E2E CRC calculate for GWM A0607 Checksum 
+unsigned char E2E_CRC_Calculation (unsigned char E2E_data_byte_array[])
+{
+    const unsigned char E2E_POLY = 0x1D; 
+    unsigned char E2E_CRC = 0x00;
+    int E2E_byte_index;
+    int E2E_bit_index;
 
-
+    // calculate CRC based on E2E vefifcation //
+    for(E2E_byte_index = 0; E2E_byte_index < 9; ++E2E_byte_index)
+        {
+          E2E_CRC^= E2E_data_byte_array[E2E_byte_index]; 
+          for(E2E_bit_index = 0; E2E_bit_index < 8; ++E2E_bit_index)
+            {
+                if((E2E_CRC & 0x80) != 0)
+                E2E_CRC = (E2E_CRC<<1)^E2E_POLY;
+                else
+                E2E_CRC<<=1;
+             }
+        }
+            E2E_CRC ^= 0x00;
+    return E2E_CRC;
+}
 
 /* USER CODE END */
 #pragma WEAK(esmGroup1Notification)
@@ -1688,6 +1786,7 @@ void rtiNotification(uint32 notification)
             {
             case TARGET_T1XX:
             case TARGET_BYD_SA2FL:
+            case TARGET_GWM_A0607:
             case TARGET_S550DIGITAL:
             case TARGET_FCA_ADAS:
             case TARGET_G2KCA_ADAS:
@@ -1951,6 +2050,7 @@ void rtiNotification(uint32 notification)
         {
         case TARGET_T1XX:
         case TARGET_BYD_SA2FL:
+        case TARGET_GWM_A0607:
         case TARGET_C1XX:
         case TARGET_G2KCA_ADAS:
         case TARGET_SGMW_CN200:
@@ -1995,7 +2095,11 @@ void rtiNotification(uint32 notification)
                         break;
 
                     case TARGET_BYD_SA2FL:
-                        canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
+//                        canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
+                        break;
+
+                    case TARGET_GWM_A0607:
+                        canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotCurrQax_fp);
                         break;
 
                     case  TARGET_C1XX:
@@ -2045,7 +2149,11 @@ void rtiNotification(uint32 notification)
                             break;
 
                         case TARGET_BYD_SA2FL:
-                            canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
+//                            canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
+                            break;
+
+                        case TARGET_GWM_A0607:
+                            canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotCurrQax_fp);
                             break;
 
                         case  TARGET_C1XX:
@@ -2094,8 +2202,12 @@ void rtiNotification(uint32 notification)
                                 break;
 
                             case TARGET_BYD_SA2FL:
-                                canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
+//                                canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_BYD_SA2FL_MotCurrQax_fp);
                                 break;
+
+                            case TARGET_GWM_A0607:
+                                 canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotCurrQax_fp);
+                                 break;
 
                             case  TARGET_C1XX:
                                 canTransmit(canREG1, CCP_REQUEST_ID, ( uint8 *) ccp_C1XX_MtrCurrQax_str);
@@ -2809,6 +2921,362 @@ void rtiNotification(uint32 notification)
 
             }   // end if ignition OFF  else statement
         }  // case BYD_SA2FL:
+        break;
+
+// GWM_A0607
+        case TARGET_GWM_A0607:
+        {
+            /* -----------  i g n _ s t a t u s  >  O F F     ----------( ON or Warm)-----------------    */
+            if(ign1_status > OFF)   // ign1_status is ON or WARM
+                //        if(ign_on_flag == TRUE)
+            {
+                if(manufacturing_TOC == YES)
+                {
+                    if(tester_present_enable_flag == 1)
+                    {
+                        tester_present_timer--;
+
+                        if(tester_present_timer < 1)
+                        {
+                            tester_present_timer = TESTER_PRESENT_SEND_TIME; // reset timer to 3 seconds ..must be sent sooner than every 5 seconds
+                            ECU1_XCP_reply_index = 20; // Do nothing index..do nothing with reply message
+                            canTransmit(canREG1, XCP_EA3_REQUEST_ID, ( uint8 *) xcp_write_tester_present_msg);
+                        } // end if (tester_present_timer < 1)
+
+                    } // end if tester_present_enable_flag = 1
+                }
+
+                if((system_msec_clock % 20) == 0)
+                {
+                    /* periodic transmission of engine_on CAN at 20ms  */
+
+                    if(ign1_status == NORMAL)
+                        //              if (Engine_on_Signal == 1)
+                    {
+                       //canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_write_engine_run);
+                        
+                        ccp_GWM_A0607_write_EngState[1] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[2] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[3] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[4] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[5] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[6] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[7] = (GWM_A0607_EngState_CRC_counter + 0x40) ; // // set EngState (Bit 62) to 0x2:Running
+
+                        //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                        //DataID: High_byte: 0x00 Low_byte:0x1E// 
+                        unsigned char E2E_EngState_data_byte_array[] = {0x1E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_EngState[7]};      
+
+                        unsigned char E2E_EngState_CRC;
+                        E2E_EngState_CRC = E2E_CRC_Calculation(E2E_EngState_data_byte_array);
+
+                        ccp_GWM_A0607_write_EngState[0] = E2E_EngState_CRC;
+                        canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_GWM_A0607_write_EngState);
+
+                        GWM_A0607_EngState_CRC_counter ++; 
+                     if(GWM_A0607_EngState_CRC_counter > 15)
+                        {
+                          GWM_A0607_EngState_CRC_counter = 0;
+                        }
+                        
+                    }
+                    else    // Put in warm_init
+                    {
+                        //canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_write_engine_off);
+                    
+                        ccp_GWM_A0607_write_EngState[1] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[2] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[3] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[4] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[5] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[6] = 0x00; 
+                        ccp_GWM_A0607_write_EngState[7] = GWM_A0607_EngState_CRC_counter ; // // set EngState (Bit 62) to 0x0:Stopped
+
+                        //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                        //DataID: High_byte: 0x00 Low_byte:0x1E// 
+                        unsigned char E2E_EngState_data_byte_array[] = {0x1E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_EngState[7]};      
+
+                        unsigned char E2E_EngState_CRC;
+                        E2E_EngState_CRC = E2E_CRC_Calculation(E2E_EngState_data_byte_array);
+
+                        ccp_GWM_A0607_write_EngState[0] = E2E_EngState_CRC;
+                        canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_GWM_A0607_write_EngState);
+
+                        GWM_A0607_EngState_CRC_counter ++; 
+                     if(GWM_A0607_EngState_CRC_counter > 15)
+                        {
+                          GWM_A0607_EngState_CRC_counter = 0;
+                        }
+                    
+                    }
+
+                }      // end if timer2_msec mods with 12
+
+               if((system_msec_clock % 20) == 0)     //periodic transmission of Vehspd at 20ms  //
+                    // VehSpd -- ABS3 (MSG ID $265)(CAN)
+                {
+                    // speed always (default) = zero
+
+                    ccp_GWM_A0607_write_Vehspd[1] = 0x20;       // set VehSpdVld (Bit13) to 0x01: Valid
+                    ccp_GWM_A0607_write_Vehspd[2] = 0x00;
+                    ccp_GWM_A0607_write_Vehspd[3] = 0x00;
+                    ccp_GWM_A0607_write_Vehspd[4] = 0x00;
+                    ccp_GWM_A0607_write_Vehspd[5] = 0x00;
+                    ccp_GWM_A0607_write_Vehspd[6] = 0x00;
+                    ccp_GWM_A0607_write_Vehspd[7] = GWM_A0607_Vehspd_CRC_counter;   
+
+                    /*CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]*/  
+                    /*DataID: High_byte: 0x00 Low_byte:0x28*/ 
+                    unsigned char E2E_Vehspd_data_byte_array[] = { 0x28, 0x00, ccp_GWM_A0607_write_Vehspd[1], 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_Vehspd[7]};  
+                        //   E2E_data_byte_array[0] = 0x28;   //DataID: Low_byte:0x28
+                        //   E2E_data_byte_array[1] = 0x00;   //DataID: High_byte: 0x00 
+                        //   E2E_data_byte_array[2] = ccp_GWM_A0607_write_Vehspd[1];
+                        //   E2E_data_byte_array[3] = ccp_GWM_A0607_write_Vehspd[2];
+                        //   E2E_data_byte_array[4] = ccp_GWM_A0607_write_Vehspd[3];
+                        //   E2E_data_byte_array[5] = ccp_GWM_A0607_write_Vehspd[4];
+                        //   E2E_data_byte_array[6] = ccp_GWM_A0607_write_Vehspd[5];
+                        //   E2E_data_byte_array[7] = ccp_GWM_A0607_write_Vehspd[6];
+                        //   E2E_data_byte_array[8] = ccp_GWM_A0607_write_Vehspd[7];
+                
+                    unsigned char E2E_Vehspd_CRC;
+                    E2E_Vehspd_CRC = E2E_CRC_Calculation(E2E_Vehspd_data_byte_array);
+
+                    ccp_GWM_A0607_write_Vehspd[0] = E2E_Vehspd_CRC;
+
+                    canTransmit(canREG1, GWM_A0607_CCP_Vehspd_ID, ( uint8 *) ccp_GWM_A0607_write_Vehspd);
+
+                    GWM_A0607_Vehspd_CRC_counter ++; 
+                    if(GWM_A0607_Vehspd_CRC_counter > 15)
+                    {
+                        GWM_A0607_Vehspd_CRC_counter = 0;
+                    }
+                }   // end if timer2_msec mods with 56 now 37 for speed
+
+                /* periodic transmission of EngSpd = 0   */
+                if((system_msec_clock % 20) == 0)
+                {
+                    // ECM1 (MSG ID $111)(CAN)
+                    canTransmit(canREG1, GWM_A0607_CCP_Endspd_ID, ( uint8 *) ccp_GWM_A0607_write_EngSpd);
+                }      // end if timer2_msec mods with 20
+
+                /* periodic transmission of Wss 20ms  */
+                if((system_msec_clock % 20) == 0)
+                {
+                    //ABS1 (MSG ID $231) (CAN)
+                    
+                    ccp_GWM_A0607_write_Wss[1] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[2] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[3] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[4] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[5] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[6] = 0x00; 
+                    ccp_GWM_A0607_write_Wss[7] = (GWM_A0607_Wss_CRC_counter + 0xC0); //set WssEdgesSumVld(Bit62 & 63) to 0x1: Valid
+
+                    //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                    //DataID: High_byte: 0x00 Low_byte:0x26
+                    unsigned char E2E_Wss_data_byte_array[] = {0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_Wss[7]};      
+
+                    unsigned char E2E_Wss_CRC;
+                    E2E_Wss_CRC = E2E_CRC_Calculation(E2E_Wss_data_byte_array);
+
+                    ccp_GWM_A0607_write_Wss[0] = E2E_Wss_CRC;
+
+                    canTransmit(canREG1, GWM_A0607_CCP_Wss_ID, ( uint8 *) ccp_GWM_A0607_write_Wss);
+
+                    GWM_A0607_Wss_CRC_counter ++; 
+                    if(GWM_A0607_Wss_CRC_counter > 15)
+                      {
+                        GWM_A0607_Wss_CRC_counter = 0;
+                      }
+                    
+                }      // end if timer2_msec mods with 20
+
+                /* periodic transmission of SteerWheelAng with 10ms  */
+                if((system_msec_clock % 10) == 0)
+                {
+                    // CSA2 (Msg ID $0A1)(CAN/CANFD)
+                    
+                    ccp_GWM_A0607_write_SteerWheelAng[1] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[2] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[3] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[4] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[5] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[6] = 0x00; 
+                    ccp_GWM_A0607_write_SteerWheelAng[7] = GWM_A0607_SteerWheelAng_CRC_counter; //set SteerWheelAng = 0 and SAS_Sts = 0x0:SAS Angle And Speed Correct
+
+                    //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                    //DataID: High_byte: 0x00 Low_byte:0x38
+                    unsigned char E2E_SteerWheelAng_data_byte_array[] = {0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_SteerWheelAng[7]};      
+
+                    unsigned char E2E_SteerWheelAng_CRC;
+                    E2E_SteerWheelAng_CRC = E2E_CRC_Calculation(E2E_SteerWheelAng_data_byte_array);
+
+                    ccp_GWM_A0607_write_SteerWheelAng[0] = E2E_SteerWheelAng_CRC;
+
+                    canTransmit(canREG1, GWM_A0607_CCP_SteerWheelAng_ID, ( uint8 *) ccp_GWM_A0607_write_SteerWheelAng);
+
+                    GWM_A0607_SteerWheelAng_CRC_counter ++; 
+                    if(GWM_A0607_SteerWheelAng_CRC_counter > 15)
+                      {
+                        GWM_A0607_SteerWheelAng_CRC_counter = 0;
+                      }
+
+                }      // end if timer2_msec mods with 10
+
+                /* periodic transmission of SteerWheelAng with 20ms  */
+                if((system_msec_clock % 20) == 0)
+                {
+                   //  ABM2 (Msg ID $245) (CAN/CANFD)
+                    
+                    ccp_GWM_A0607_write_VehYawRate[1] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[2] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[3] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[4] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[5] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[6] = 0x00; 
+                    ccp_GWM_A0607_write_VehYawRate[7] = (GWM_A0607_VehYawRate_CRC_counter + 0x20); //set VehDynYawRateVld(Bit61) to 0x1: Valid
+
+                    //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                    //DataID: High_byte: 0x00 Low_byte:0x3B
+                    unsigned char E2E_VehYawRate_data_byte_array[] = {0x3B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_VehYawRate[7]};      
+
+                    unsigned char E2E_VehYawRate_CRC;
+                    E2E_VehYawRate_CRC = E2E_CRC_Calculation(E2E_VehYawRate_data_byte_array);
+
+                    ccp_GWM_A0607_write_VehYawRate[0] = E2E_VehYawRate_CRC;
+
+                    canTransmit(canREG1, GWM_A0607_CCP_VehYawRate_ID, ( uint8 *) ccp_GWM_A0607_write_VehYawRate);
+
+                    GWM_A0607_VehYawRate_CRC_counter ++; 
+                    if(GWM_A0607_VehYawRate_CRC_counter > 15)
+                      {
+                        GWM_A0607_VehYawRate_CRC_counter = 0;
+                      }
+
+                }      // end if timer2_msec mods with 20
+
+                /* periodic transmission of MaxEngTrqNorm with 20ms  */
+                if((system_msec_clock % 100) == 0)
+                {
+                     //  ECM3 (MSG ID $371) (CAN)
+                    
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[1] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[2] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[3] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[4] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[5] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[6] = 0x00; 
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[7] = GWM_A0607_MaxEngTrqNorm_CRC_counter; //set MaxEngTrqNorm = 0
+
+                    //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                    //DataID: High_byte: 0x00 Low_byte:0x1F
+                    unsigned char E2E_MaxEngTrqNorm_data_byte_array[] = {0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_MaxEngTrqNorm[7]};      
+
+                    unsigned char E2E_MaxEngTrqNorm_CRC;
+                    E2E_MaxEngTrqNorm_CRC = E2E_CRC_Calculation(E2E_MaxEngTrqNorm_data_byte_array);
+
+                    ccp_GWM_A0607_write_MaxEngTrqNorm[0] = E2E_MaxEngTrqNorm_CRC;
+
+                    canTransmit(canREG1, GWM_A0607_CCP_MaxEngTrqNorm_ID, ( uint8 *) ccp_GWM_A0607_write_MaxEngTrqNorm);
+
+                    GWM_A0607_MaxEngTrqNorm_CRC_counter ++; 
+                    if(GWM_A0607_MaxEngTrqNorm_CRC_counter > 15)
+                      {
+                        GWM_A0607_MaxEngTrqNorm_CRC_counter = 0;
+                      }
+                      
+                }      // end if timer2_msec mods with 100
+
+                /* periodic transmission of NetEngTrq with 10ms  */
+                if((system_msec_clock % 10) == 0)
+                {
+                    // ECM1 (MSG ID $111)(CAN)
+                    canTransmit(canREG1, GWM_A0607_CCP_NetEngTrq_ID, ( uint8 *) ccp_GWM_A0607_write_NetEngTrq);
+                }      // end if timer2_msec mods with 100
+
+                if((system_msec_clock % 10) == 0)
+                {
+                    // canTransmit(canREG1, CCP_Power_Mode_ID, ( uint8 *) ccp_write_PowerModeON);
+                }      // end if timer2_msec mods with 100
+
+            }     // end if ign on flag is true
+
+            /* -----------  i g n _ s t a t u s  ==  O F F     ---------------------------    */
+
+            else     // ign1_status is OFF  ----   ign_on_flag = FALSE  or ignition OFF just send power mode OFF message
+            {
+                if((system_msec_clock % 100) == 0)
+                {
+                    /* periodic transmission of Power Mode Run 100ms  */
+                //    canTransmit(canREG1, CCP_Power_Mode_ID, ( uint8 *) ccp_write_PowerModeOFF);
+                 /*
+                 ccp_GWM_A0607_write_EngState[7] = GWM_A0607_EngState_CRC_counter ; // // set EngState (Bit 62) to 0x0:Stopped
+
+                        //CRC calculation & 9 bytes --[DataID_(High byte) + DataID_(Low byte) + 7 Bytes (data_byte1~ data_byte 7)]// 
+                        //DataID: High_byte: 0x00 Low_byte:0x1E// 
+                        unsigned char E2E_EngState_data_byte_array[] = {0x1E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, ccp_GWM_A0607_write_EngState[7]};      
+
+                        unsigned char E2E_EngState_CRC;
+                        E2E_EngState_CRC = E2E_CRC_Calculation(E2E_EngState_data_byte_array);
+
+                        ccp_GWM_A0607_write_EngState[0] = E2E_EngState_CRC;
+                        canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_GWM_A0607_write_EngState);
+
+                        GWM_A0607_EngState_CRC_counter ++; 
+                     if(GWM_A0607_EngState_CRC_counter > 15)
+                        {
+                          GWM_A0607_EngState_CRC_counter = 0;
+                        }
+                        */
+            
+                }      // end if timer2_msec mods with 100
+
+                //Added zero vehicle speed periodic message to off state.  Part will not shutdown without this.  G.Wood 16JAN19
+                if((system_msec_clock % 10) == 0)     /* periodic transmission of speed at 100ms  */
+                                    // CHANGED to 56 now 37 ms because power mode is 100ms also
+                {
+                    // speed always (default) = zero
+                    //canTransmit(canREG1, CCP_SPEED_ID, ( uint8 *) ccp_write_0_to_speed);
+                    if(Veh_speed_count > 15)
+                    {
+                        Veh_speed_count = 0;
+                    }
+                //    canTransmit(canREG1, CCP_SPEED_ID, *Veh_speed_00_table_BYD_SA2FL+Veh_speed_count*8);
+                    Veh_speed_count ++;
+                }   // end if timer2_msec mods with 56 now 37 for speed
+
+                //Added vehicle ready periodic message to off state.
+                if((system_msec_clock % 20) == 0)
+                {
+                 //  canTransmit(canREG1, VEHICLE_READY, ( uint8 *) Vehicle_not_ready);//here
+                }      // end if timer2_msec mods with 100
+
+                /* periodic transmission of Power Mode Run 100ms  */
+
+                if((system_msec_clock % 12) == 0)
+                {
+                    /* periodic transmission of engine_on CAN at 12ms  */
+
+                    //canTransmit(canREG1, CCP_Engine_Run, ( uint8 *) ccp_write_engine_off);
+                    //   L.C.  cant see any case where ignition is off and we need to send ccp_write_engine_run message, ect.
+
+                    //              CAN1.Obj[5].con1 =  0x5a;       // 01,01,10,01 reset rmtpnd, reset txrqst, set cpuupd, reset newdat
+                    //              if (Engine_on_Signal == 1)
+                    //              {
+                    //                  memcpy(&CAN1.Obj[5].Dat.Byte,&ccp_write_engine_run,8);  // move data in
+                    //              }
+                    //              else
+                    //              {
+                    //                  memcpy(&CAN1.Obj[5].Dat.Byte,&ccp_write_engine_off,8);  // puts product in warm init (no current)
+                    //              }
+                    //
+                    //              CAN1.Obj[5].con1 =  0x55;       // 01,01,01,01 reset rmtpnd, reset txrqst, reset cpuupd, reset newdat
+                    //              CAN1.Obj[5].con1 =  TxRqst;     // push message
+
+                }      // end if timer2_msec mods with 12
+
+            }   // end if ignition OFF  else statement
+        }  // case GWM_A0607:
         break;
 
         case TARGET_SGMW_CN200:
@@ -4268,6 +4736,7 @@ void canMessageNotification(canBASE_t *node, uint32 messageBox)
         }   // end case T1XX    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  T 1 X X  C A N 1  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         break;
 
+ /*
         case TARGET_BYD_SA2FL:       //  VVVVVVVVVVVVVVVVVVVVVVVVVVVVV  G A C  9 0  C A N 1  VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
         {
             switch(messageBox)
@@ -4711,6 +5180,452 @@ void canMessageNotification(canBASE_t *node, uint32 messageBox)
             }   // end switch(messageBox) for BYD_SA2FL on canREG1
 
         }   // end case BYD_SA2FL    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  G A C 2 6  C A N 1  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        break;
+*/
+
+       case TARGET_GWM_A0607:       //  VVVVVVVVVVVVVVVVVVVVVVVVVVVVV  G W M A 0 6 0 7  C A N 1  VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        {
+            switch(messageBox)
+            {
+            case PROD_MESS1_ID:     // 0x148    canMESSAGE_BOX1 11bit identifier-- Rec Response from EPS (not used)
+                break;
+
+            case PROD_MESS2_ID:     // 0x778    canMESSAGE_BOX2 11bit identifier-- Rec ON Star from EPS  (not used)
+                break;
+
+            case CCP_Engine_Run:    // 0x271    canMESSAGE_BOX3 11bit identifier-- Trans Engine ON to EPS
+                break;
+
+            case GWM_A0607_CCP_Vehspd_ID:       // 0x265    canMESSAGE_BOX4 11bit identifier-- Trans VehSpd to EPS
+                break;
+
+            case GWM_A0607_CCP_Endspd_ID:      // 0x348    canMESSAGE_BOX5 11bit identifier-- Trans Speed and Validity Status to EPS
+
+                break;
+
+            case GWM_A0607_CCP_RESPONSE_ID:     // 0x706  0x63D  canMESSAGE_BOX6 11bit identifier-- Rec CCP response from EPS
+                // recieve and decide what the REQ was, parse and store
+                // Standard dump of all ccp request
+
+                canGetData(canREG1, GWM_A0607_CCP_RESPONSE_ID, can1_rx_data); // get data, store in rx_data array
+
+                switch(can1_request_index)      // requesting multiple vaiables using same messageBox, can1_request_index keeps track, store and parse in main
+                {
+
+                case 0:     // do nothing with request_connect data, setup and trans next request
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_SystemState_byt);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 1:     // store ccp_SystemState_byt, setup and trans next request
+
+                    memcpy(&can1_dump_err_data[1],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotCurrQax_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 2:     // store ccp_MotCurrQax_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[2],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTq0Meas_HwTq4_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 3:     // store ccp_GWM_A0607_HwTq0Meas_HwTq4_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[3],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTq1Meas_HwTq5_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 4:     // store ccp_GWM_A0607_HwTq1Meas_HwTq5_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[4],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotHwPosn_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 5:     // store ccp_GWM_A0607_MotHwPosn_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[5],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_BattVltg_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 6:     // store ccp_GWM_A0607_BattVltg_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[6],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotTq_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 7:     // store ccp_GWM_A0607_MotTq_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[7],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTrq_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 8:     // store ccp_GWM_A0607_HwTrq_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[8],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_MotMagTestim_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 9:     //  store ccp_GWM_A0607_MotMagTestim_fp, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[9],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_ECUTFilt_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                case 10:     // store ccp_GWM_A0607_ECUTFilt_fp, setup and trans next reques
+                    //  all done, index bumped for main to test
+                    memcpy(&can1_dump_err_data[10],&can1_rx_data,8);
+
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+                    break;
+
+                    //  ----------------   H c u r r    GWM_A0607 reading cases 2000-2031 done during normal testing
+
+                case 2000:      // Hcurr Qax readings(x3) // store can_MotCurrQax1_str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[11],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTrq_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+
+                    break;
+
+                case 2001:      // store ccp_HwTqArbn_HwTq1str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[12],&can1_rx_data,8);
+
+                    can1_request_index = 2999;      // arbitrary value, all done for now
+
+                    break;
+
+                case 2010:      // store can_MotCurrQax2_str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[13],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTrq_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+
+                    break;
+
+                case 2011:      // store ccp_HwTqArbn_HwTq2str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[14],&can1_rx_data,8);
+
+                    can1_request_index = 2999;      // arbitrary value, all done for now
+
+                    break;
+
+                case 2020:      // store can_MotCurrQax3_str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[15],&can1_rx_data,8);
+
+                    canTransmit(canREG1, GWM_A0607_CCP_REQUEST_ID, ( uint8 *) ccp_GWM_A0607_HwTrq_fp);
+                    can1_request_index++;       // bump index so next receive will switch to correct message
+
+                    break;
+
+                case 2021:      // store ccp_HwTqArbn_HwTq3str, setup and trans next reques
+
+                    memcpy(&can1_dump_err_data[16],&can1_rx_data,8);
+
+                    can1_request_index = 2999;      // arbitrary value, all done for now
+
+                    break;
+
+                case 2999:
+
+                    can1_request_index = 3000;  // don't care response is done...ok to send new request.
+
+                    break;
+
+                default:
+                {
+                }
+
+                }   // end switch(can1_request_index) for GWM_A0607   C A N 1
+
+                break;  // end case CCP_RESPONSE_ID:
+
+                case GWM_A0607_CCP_REQUEST_ID:        // 0x708 0x63C   canMESSAGE_BOX7 11bit identifier-- Trans CCP Request for Data to EPS
+                    break;
+
+                case XCP_EA3_REQUEST_ID:     // 0x242   canMESSAGE_BOX8 11bit identifier-- Trans CCP Request for Data to EPS
+                    break;
+
+                case XCP_EA3_RESPONSE_ID:    // 0x642   canMESSAGE_BOX9 11bit identifier-- Rec XCP Response from EPS for data
+                    // receive and decide what the REQ was, parse and store
+
+                    break; // end case XCP_RESPONSE_ID
+
+                case XCP_EA4_REQUEST_ID:     // 0x712   canMESSAGE_BOX10 11bit identifier-- Trans XCP Request from EPS for data
+                    break;
+
+                case XCP_EA4_RESPONSE_ID:     // 0x710   canMESSAGE_BOX11 11bit identifier-- Rec XCP Response to EPS for data
+                    canGetData(canREG1, XCP_EA4_RESPONSE_ID, can1_rx_data); // get data, store in rx_data array
+
+                    switch(ECU1_XCP_reply_index)    // requesting multiple requests using same messageBox, DCT_XCP_rply_indx keeps track, clear_dtcs_flag determines action
+                    {
+
+                    case 1:
+                        //EA4 is different
+                        if((can1_rx_data[1] == 0x50) && (can1_rx_data[2] == 0x7E))  // positive responce from enter Nexteer mode
+                        {
+                            if(ECU1_clear_DTCs_flag == 1)        // clear DTC's mode
+                            {
+                                canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_EA4_write_clear_DTC_rqst1);    // request clear DTCs
+                            }
+
+                            else       // get DTC's mode
+
+                            {
+                                canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_EA4_write_get_DTC_rqst1);  // request DTCs first string
+                            }
+
+                            ECU1_XCP_reply_index++;
+                        }  // end positive responce nexteer mode
+                        break;
+
+                    case 2:
+
+                        if((can1_rx_data[0] == 0x10) && (can1_rx_data[2] == 0x62))    // get DTC's mode
+                        {
+
+                            dtc1[0][0] =  can1_rx_data[5];
+                            dtc1[0][1] =  can1_rx_data[6];
+                            dtc1[0][2] =  can1_rx_data[7];
+
+                            canTransmit(canREG1, XCP_EA4_REQUEST_ID, ( uint8 *) xcp_EA4_write_get_DTC_rqst2);   // request DTCs 2nd string
+
+                            ECU1_XCP_reply_index++;
+                        }
+
+                        if((can1_rx_data[0] == 0x04) && (can1_rx_data[1] == 0x71))  // responce to clear DTC's mode
+                        {
+                            if(ECU1_clear_DTCs_flag == 1)
+                            {
+                                ECU1_XCP_reply_index = 0;
+                                ECU1_clear_DTCs_flag = 0;   // reset flag and index, done
+                            }
+                        }
+
+                        break;
+
+                    case 3:
+                        if(can1_rx_data[0] == 0x21)
+                        {
+                            dtc1[0][3] =  can1_rx_data[1];
+                            dtc1[0][4] =  can1_rx_data[2];
+                            dtc1[1][0] =  can1_rx_data[3];
+                            dtc1[1][1] =  can1_rx_data[4];
+                            dtc1[1][2] =  can1_rx_data[5];
+                            dtc1[1][3] =  can1_rx_data[6];
+                            dtc1[1][4] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 4:
+                        if(can1_rx_data[0] == 0x22)
+                        {
+                            dtc1[2][0] =  can1_rx_data[1];
+                            dtc1[2][1] =  can1_rx_data[2];
+                            dtc1[2][2] =  can1_rx_data[3];
+                            dtc1[2][3] =  can1_rx_data[4];
+                            dtc1[2][4] =  can1_rx_data[5];
+                            dtc1[3][0] =  can1_rx_data[6];
+                            dtc1[3][1] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 5:
+                        if(can1_rx_data[0] == 0x23)
+                        {
+                            dtc1[3][2] =  can1_rx_data[1];
+                            dtc1[3][3] =  can1_rx_data[2];
+                            dtc1[3][4] =  can1_rx_data[3];
+                            dtc1[4][0] =  can1_rx_data[4];
+                            dtc1[4][1] =  can1_rx_data[5];
+                            dtc1[4][2] =  can1_rx_data[6];
+                            dtc1[4][3] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+
+                        break;
+
+                    case 6:
+                        if(can1_rx_data[0] == 0x24)
+                        {
+                            dtc1[4][4] =  can1_rx_data[1];
+                            dtc1[5][0] =  can1_rx_data[2];
+                            dtc1[5][1] =  can1_rx_data[3];
+                            dtc1[5][2] =  can1_rx_data[4];
+                            dtc1[5][3] =  can1_rx_data[5];
+                            dtc1[5][4] =  can1_rx_data[6];
+                            dtc1[6][0] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 7:
+                        if(can1_rx_data[0] == 0x25)
+                        {
+                            dtc1[6][1] =  can1_rx_data[1];
+                            dtc1[6][2] =  can1_rx_data[2];
+                            dtc1[6][3] =  can1_rx_data[3];
+                            dtc1[6][4] =  can1_rx_data[4];
+                            dtc1[7][0] =  can1_rx_data[5];
+                            dtc1[7][1] =  can1_rx_data[6];
+                            dtc1[7][2] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 8:
+                        if(can1_rx_data[0] == 0x26)
+                        {
+                            dtc1[7][3] =  can1_rx_data[1];
+                            dtc1[7][4] =  can1_rx_data[2];
+                            dtc1[8][0] =  can1_rx_data[3];
+                            dtc1[8][1] =  can1_rx_data[4];
+                            dtc1[8][2] =  can1_rx_data[5];
+                            dtc1[8][3] =  can1_rx_data[6];
+                            dtc1[8][4] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 9:
+                        if(can1_rx_data[0] == 0x27)
+                        {
+                            dtc1[9][0] =  can1_rx_data[1];
+                            dtc1[9][1] =  can1_rx_data[2];
+                            dtc1[9][2] =  can1_rx_data[3];
+                            dtc1[9][3] =  can1_rx_data[4];
+                            dtc1[9][4] =  can1_rx_data[5];
+                            dtc1[10][0] = can1_rx_data[6];
+                            dtc1[10][1] = can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 10:
+                        if(can1_rx_data[0] == 0x28)
+                        {
+                            dtc1[10][2] =  can1_rx_data[1];
+                            dtc1[10][3] =  can1_rx_data[2];
+                            dtc1[10][4] =  can1_rx_data[3];
+                            dtc1[11][0] =  can1_rx_data[4];
+                            dtc1[11][1] =  can1_rx_data[5];
+                            dtc1[11][2] =  can1_rx_data[6];
+                            dtc1[11][3] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 11:
+                        if(can1_rx_data[0] == 0x29)
+                        {
+                            dtc1[11][4] =  can1_rx_data[1];
+                            dtc1[12][0] =  can1_rx_data[2];
+                            dtc1[12][1] =  can1_rx_data[3];
+                            dtc1[12][2] =  can1_rx_data[4];
+                            dtc1[12][3] =  can1_rx_data[5];
+                            dtc1[12][4] =  can1_rx_data[6];
+                            dtc1[13][0] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 12:
+                        if(can1_rx_data[0] == 0x2A)
+                        {
+                            dtc1[13][1] =  can1_rx_data[1];
+                            dtc1[13][2] =  can1_rx_data[2];
+                            dtc1[13][3] =  can1_rx_data[3];
+                            dtc1[13][4] =  can1_rx_data[4];
+                            dtc1[14][0] =  can1_rx_data[5];
+                            dtc1[14][1] =  can1_rx_data[6];
+                            dtc1[14][2] =  can1_rx_data[7];
+                        }
+                        ECU1_XCP_reply_index++;
+                        break;
+
+                    case 13:
+                        if(can1_rx_data[0] == 0x2B)
+                        {
+                            dtc1[14][3] =  can1_rx_data[1];
+                            dtc1[14][4] =  can1_rx_data[2];
+                        }
+                        ECU1_XCP_reply_index = 14;   // last read set to 14 for get_DTCs function
+                        break;
+
+                    case 100:
+                        ECU1_XCP_reply_index = 101;     // case used for multi message for TOC
+                        break;
+
+                    case 101:
+                        ECU1_XCP_reply_index = 102;     // case used for multi message for TOC
+                        break;
+
+                    default:
+
+                        ECU1_XCP_reply_index = 0;
+
+                        break;
+
+                    } // end switch on DTC_XCP_rply_indx
+
+                    break;
+
+                    case TESTER_REC_DEBUG_ID:    // 0x7FF    canMESSAGE_BOX12 11bit identifier-- REC from Anyone
+
+                        break;
+
+                    case TESTER_TRANS_DEBUG_ID:  // 0x7FE     canMESSAGE_BOX13 11bit identifier-- Transmit to Anyone
+
+                        break;
+
+                    case canMESSAGE_BOX14:      // 0x14  11bit identifier-- Not Used
+
+                        break;
+
+                    case canMESSAGE_BOX15:      // 0x15  11bit identifier-- Not Usedr
+
+                        break;
+
+                    case canMESSAGE_BOX16:      // 0x16  11bit identifier-- Not Used
+
+                        break;
+
+                    default:
+
+                    {
+                        can1_message_type_debug = messageBox;  // an unknown messageBox
+                    }
+                    break;
+
+            }   // end switch(messageBox) for GWM_A0607 on canREG1
+
+        }   // end case GWM_A0607    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  G W M A 0 6 0 7  C A N 1  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         break;
 
         case TARGET_9BXX:
