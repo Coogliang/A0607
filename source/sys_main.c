@@ -3382,7 +3382,7 @@ const char commands[][57] = {
 #define PROD_MESS2_ID               canMESSAGE_BOX2    // 0x778   11bit identifier-- Rec ON Star from EPS (not used)
 #define CCP_Engine_Run              canMESSAGE_BOX3    // 0x271   11bit identifier-- Trans Engine ON to EPS // ECM2 (MSG ID $271)(CAN)
 #define GWM_A0607_CCP_Vehspd_ID     canMESSAGE_BOX4    // 0x265   11bit identifier-- Trans Speed to EPS  // ABS3 (MSG ID $265)(CAN)
-#define GWM_A0607_CCP_Endspd_ID     canMESSAGE_BOX5    // 0x348   11bit identifier-- Trans EngSpd to EPS      // ECM1 (MSG ID $111)(CAN)
+#define GWM_A0607_CCP_Endspd_ID     canMESSAGE_BOX5    // 0x111   11bit identifier-- Trans EngSpd to EPS      // ECM1 (MSG ID $111)(CAN) for NTC 0x136,0x137
 
 #define GWM_A0607_CCP_RESPONSE_ID   canMESSAGE_BOX7    // 0x63D   11bit identifier-- Rec CCP Response from EPS for Data
 #define GWM_A0607_CCP_REQUEST_ID    canMESSAGE_BOX6    // 0x63C   11bit identifier-- Trans CCP Request for Data to EPS
@@ -3393,12 +3393,12 @@ const char commands[][57] = {
 #define TESTER_REC_DEBUG_ID         canMESSAGE_BOX12   // 0x7FF   11bit identifier-- REC from Anyone
 #define TESTER_TRANS_DEBUG_ID       canMESSAGE_BOX13   // 0x7FE   11bit identifier-- Transmit to Anyone
 
-#define GWM_A0607_CCP_Wss_ID                canMESSAGE_BOX14    // 0x231   11bit identifier-- Trans Wss to EPS      // ABS1 (MSG ID $231) (CAN)
-#define GWM_A0607_CCP_MaxEngTrqNorm_ID      canMESSAGE_BOX15    // 0x371   11bit identifier-- Trans MaxEngTrqNorm to EPS      // ECM3 (MSG ID $371) (CAN)
-#define GWM_A0607_CCP_NetEngTrq_ID          canMESSAGE_BOX16    // 0x082   11bit identifier-- Trans NetEngTrq to EPS      // ECM4 (MSG ID $082) (CAN)
+#define GWM_A0607_CCP_Wss_ID                canMESSAGE_BOX14    // 0x231   11bit identifier-- Trans Wss to EPS      // ABS1 (MSG ID $231) (CAN) // for NTC 0x124,0x125
+#define GWM_A0607_CCP_MaxEngTrqNorm_ID      canMESSAGE_BOX15    // 0x371   11bit identifier-- Trans MaxEngTrqNorm to EPS      // ECM3 (MSG ID $371) (CAN) // for NTC 0x188, 0x189
+#define GWM_A0607_CCP_NetEngTrq_ID          canMESSAGE_BOX16    // 0x082   11bit identifier-- Trans NetEngTrq to EPS      // ECM4 (MSG ID $082) (CAN) // for NTC 0x13C,0x13D
 #define GWM_A0607_CCP_DiagFuncReq_ID        canMESSAGE_BOX17    // 0x760   11bit identifier-- Trans DiagFuncReq to EPS      // DIAG_FUN_REQ (MSG ID $760)
-#define GWM_A0607_CCP_VehYawRate_ID         canMESSAGE_BOX18    // 0x245   11bit identifier-- Trans VehYawRate to EPS      // ABM2 (Msg ID $245) (CAN/CANFD)
-#define GWM_A0607_CCP_SteerWheelAng_ID      canMESSAGE_BOX19    // 0x0A1   11bit identifier-- Trans SteerWheelAng to EPS      // CSA2 (Msg ID $0A1)(CAN/CANFD)
+#define GWM_A0607_CCP_VehYawRate_ID         canMESSAGE_BOX18    // 0x245   11bit identifier-- Trans VehYawRate to EPS      // ABM2 (Msg ID $245) (CAN/CANFD) // for NTC 0x120,0x121
+#define GWM_A0607_CCP_SteerWheelAng_ID      canMESSAGE_BOX19    // 0x0A1   11bit identifier-- Trans SteerWheelAng to EPS      // CSA2 (Msg ID $0A1)(CAN/CANFD) // for NTC 0x130.0x131
 
 // C A N 2  --  G W M A 0 6 07  Products none are ADAS yet
 

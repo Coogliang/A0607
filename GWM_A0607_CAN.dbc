@@ -1,0 +1,438 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: TESTER ECM ESP GW EPS
+
+
+BO_ 881 ECM3: 8 ECM
+ SG_ MaxEngTrqNorm : 23|7@0+ (5,0) [0|510] "Nm"  EPS
+ SG_ Checksum_ECM3 : 7|8@0+ (1,0) [0|255] ""  EPS
+ SG_ RollingCounter_ECM3 : 59|4@0+ (1,0) [0|15] ""  EPS
+
+BO_ 130 ECM4: 8 ECM
+ SG_ NetEngTrq : 15|16@0+ (0.0030518,-100) [-100|99.9966612] "%"  EPS
+
+BO_ 561 ABS1: 8 ESP
+ SG_ RollingCounter_ABS1 : 59|4@0+ (1,0) [0|15] ""  EPS
+ SG_ WssFREdgesSumVld : 62|1@0+ (1,0) [0|1] ""  EPS
+ SG_ WssFLEdgesSumVld : 63|1@0+ (1,0) [0|1] ""  EPS
+ SG_ WssFREdgesSum : 55|8@0+ (1,0) [0|255] ""  EPS
+ SG_ WssFLEdgesSum : 47|8@0+ (1,0) [0|255] ""  EPS
+ SG_ CheckSum_ABS1 : 7|8@0+ (1,0) [0|255] ""  EPS
+
+BO_ 581 ABM2: 8 GW
+ SG_ RollingCounter_ABM2 : 59|4@0+ (1,0) [0|15] ""  EPS
+ SG_ CheckSum_ABM2 : 7|8@0+ (1,0) [0|255] ""  EPS
+ SG_ VehDynYawRateVld : 61|1@0+ (1,0) [0|1] ""  EPS
+ SG_ VehYawRate : 47|16@0+ (0.00024,-2.093) [-2.093|2.093] "rad/s"  EPS
+
+BO_ 273 ECM1: 8 ECM
+ SG_ EngSpdVldty : 63|2@0+ (1,0) [0|2] ""  EPS
+ SG_ EngSpd : 47|16@0+ (0.125,0) [0|8191.875] "rpm"  EPS
+
+BO_ 161 CSA2: 8 GW
+ SG_ Checksum_CSA2 : 7|8@0+ (1,0) [0|255] ""  EPS
+ SG_ SteerWheelAng : 15|15@0+ (0.1,0) [0|780] "deg"  EPS
+ SG_ SteerWheelAngSign : 16|1@0+ (1,0) [0|1] ""  EPS
+ SG_ SAS_Sts : 55|2@0+ (1,0) [0|3] ""  EPS
+ SG_ Rollingcounter_CSA2 : 59|4@0+ (1,0) [0|15] ""  EPS
+
+BO_ 360 EPS1: 8 EPS
+ SG_ EPS_AssiRat : 23|7@0+ (1,0) [0|100] ""  GW
+ SG_ EPS_SteerMod : 55|3@0+ (1,0) [0|7] ""  GW
+ SG_ RollingCounter_EPS1 : 59|4@0+ (1,0) [0|15] ""  GW
+ SG_ EPS_AvailSts : 29|2@0+ (1,0) [0|3] ""  GW
+ SG_ EPS_InterferDetdVld : 30|1@0+ (1,0) [0|1] ""  GW
+ SG_ EPS_InterferDetd : 31|1@0+ (1,0) [0|1] ""  GW
+ SG_ EPS_TrqSnsrSts : 14|1@0+ (1,0) [0|1] ""  GW
+ SG_ EPS_FailSts : 13|2@0+ (1,0) [0|3] ""  GW
+ SG_ CheckSum_EPS1 : 7|8@0+ (1,0) [0|255] ""  GW
+
+BO_ 625 ECM2: 8 ECM
+ SG_ Checksum_ECM2 : 7|8@0+ (1,0) [0|255] ""  EPS
+ SG_ RollingCounter_ECM2 : 59|4@0+ (1,0) [0|15] ""  EPS
+ SG_ EngState : 62|2@0+ (1,0) [0|3] ""  EPS
+
+BO_ 613 ABS3: 8 ESP
+ SG_ CheckSum_ABS3 : 7|8@0+ (1,0) [0|255] ""  EPS
+ SG_ VehSpdVld : 13|1@0+ (1,0) [0|1] ""  EPS
+ SG_ VehSpd : 12|13@0+ (0.05625,0) [0|299.98125] "kph"  EPS
+ SG_ RollingCounter_ABS3 : 59|4@0+ (1,0) [0|15] ""  EPS
+
+BO_ 1810 CmnMfgSrvReq: 8 TESTER
+ SG_ XCP_Diag_Rx : 7|64@0+ (1,0) [0|1.84467440737096E+019] ""  EPS
+
+BO_ 1808 CmnMfgSrvResp: 8 EPS
+ SG_ XCP_Diag_Tx : 7|64@0+ (1,0) [0|1.84467440737096E+019] ""  TESTER
+
+BO_ 1597 EPS_XCP_Tx: 8 EPS
+ SG_ Calibration_Tx_Byte7 : 63|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte6 : 55|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte5 : 47|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte4 : 39|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte3 : 31|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte2 : 23|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte1 : 15|8@0+ (1,0) [0|255] ""  TESTER
+ SG_ Calibration_Tx_Byte0 : 7|8@0+ (1,0) [0|255] ""  TESTER
+
+BO_ 1833 EPS_Phy_Resp: 8 EPS
+ SG_ DiagPhysRepFromEPS : 7|64@0+ (1,0) [0|1.84467440737096E+019] ""  TESTER
+
+BO_ 1596 EPS_XCP_Rx: 8 TESTER
+ SG_ Calibration_Rx_Byte7 : 63|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte6 : 55|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte5 : 47|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte4 : 39|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte3 : 31|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte2 : 23|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte1 : 15|8@0+ (1,0) [0|255] ""  EPS
+ SG_ Calibration_Rx_Byte0 : 7|8@0+ (1,0) [0|255] ""  EPS
+
+BO_ 1888 Diag_Fun_Req: 8 TESTER
+ SG_ DiagFuncReq : 7|64@0+ (1,0) [0|1.844674407371E+019] "cnt"  EPS
+
+BO_ 1825 EPS_Phy_Req: 8 TESTER
+ SG_ DiagPhysReqToEPS : 7|64@0+ (1,0) [0|1.844674407371E+019] "cnt"  EPS
+
+
+
+CM_ SG_ 561 RollingCounter_ABS1 "ABS4 counter for live check";
+CM_ SG_ 161 SteerWheelAng "angle of steering wheel (raw data)";
+CM_ SG_ 161 SteerWheelAngSign "sign of steering wheel angle (+/-)
+definition according to DIN 70000 / ISO 8855
+wheel position to left = positive
+wheel position to right = negative
+wheel position straightforward = 0 (positive)";
+CM_ SG_ 161 SAS_Sts "Status of steering angle sensor";
+CM_ SG_ 360 RollingCounter_EPS1 "Rolling counter";
+CM_ SG_ 360 EPS_AvailSts "Electrical Power Steering Available Status";
+CM_ SG_ 360 EPS_InterferDetdVld "Driver Steering Interference Detected Validity";
+CM_ SG_ 360 EPS_InterferDetd "Driver Steering Interference Detected";
+CM_ SG_ 360 EPS_TrqSnsrSts "EPS torque sensor status";
+CM_ SG_ 360 EPS_FailSts "Electrical steering fail status";
+CM_ SG_ 360 CheckSum_EPS1 "Use the checksum strategy from document ''GWMLAN00-18 Checksum Req Spec-V1.0''";
+CM_ SG_ 625 EngState "Engine state";
+CM_ SG_ 613 CheckSum_ABS3 "Use the checksum strategy from document -GWMLAN00-18 Checksum Req Spec-V1.0-";
+CM_ SG_ 613 VehSpdVld "Quality/fault information to current Vehicle speed
+information. Refer to the -Veh speed cal- tab for detail.";
+CM_ SG_ 613 VehSpd "Current Vehicle speed information
+(when v < 1 kph, set value to 0.) refer to -Veh speed cal- tab for detail.";
+CM_ SG_ 613 RollingCounter_ABS3 "Rolling Counter";
+BA_DEF_ SG_  "GenSigDataID" STRING ;
+BA_DEF_ SG_  "GenSigFuncType" ENUM  "NoFunction","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","CHK","CNTR","n/a","n/a","n/a","CNTR_AR_01","CRC_AR_01_BOTH","CRC_AR_01_ALT","CRC_AR_01_LOW","CRC_AR_01_NIBBLE","CNTR_AR_04","CRC_AR_04A","CNTR_AR_05","CRC_AR_05";
+BA_DEF_ SG_  "SigGroup" STRING ;
+BA_DEF_ BO_  "NmAsrMessage" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgCycleTimeFast" FLOAT 0 300000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 100000;
+BA_DEF_ BO_  "E2EProfile" STRING ;
+BA_DEF_ BO_  "E2EDataId" INT 0 65535;
+BA_DEF_ BO_  "E2EP01DataIdMode" ENUM  "all16Bit","alternating8Bit","lower8Bit","lower12Bit";
+BA_DEF_ BO_  "E2EDataLength" INT 0 65535;
+BA_DEF_ BU_  "NmAsrNode" ENUM  "No","Yes";
+BA_DEF_ BU_  "NmAsrNodeIdentifier" INT 0 255;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "E2EP01SynCounterInit" INT 0 65535;
+BA_DEF_  "E2EP01MaxNoNewOrRepeatedData" INT 0 65535;
+BA_DEF_  "E2EP01DataIdNibbleOffset" INT 0 65535;
+BA_DEF_  "E2EP01ProfileBehavior" ENUM  "PRE_R4_2","R4_2";
+BA_DEF_  "E2EP01CounterOffset" INT 0 65535;
+BA_DEF_  "E2EP01CrcOffset" INT 0 65535;
+BA_DEF_  "E2EP01MinOkStateInvalid" INT 0 255;
+BA_DEF_  "E2EP01MinOkStateValid" INT 0 255;
+BA_DEF_  "E2EP01MinOkStateInit" INT 0 255;
+BA_DEF_  "E2EP01UpperHeaderBitsToShift" INT 0 64;
+BA_DEF_  "E2EP01WindowSize" INT 0 255;
+BA_DEF_  "E2EP01MaxErrorStateInvalid" INT 0 255;
+BA_DEF_  "E2EP01MaxErrorStateValid" INT 0 255;
+BA_DEF_  "E2EP01MaxErrorStateInit" INT 0 255;
+BA_DEF_  "E2EP01MaxDeltaCounter" INT 0 255;
+BA_DEF_  "E2EP01ProfileName" STRING ;
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagState" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagResponse" ENUM  "No","Yes";
+BA_DEF_ BO_  "DiagRequest" ENUM  "No","Yes";
+BA_DEF_  "VersionNumber" INT 0 1000000000;
+BA_DEF_  "VersionDay" INT 0 31;
+BA_DEF_  "VersionMonth" INT 0 12;
+BA_DEF_  "VersionYear" INT 0 99;
+BA_DEF_  "Manufacturer" STRING ;
+BA_DEF_ EV_  "GenEnvAutoGenCtrl" ENUM  "No","Yes";
+BA_DEF_ EV_  "GenEnvMsgOffset" INT 0 999999999;
+BA_DEF_ EV_  "GenEnvMsgName" STRING ;
+BA_DEF_ EV_  "GenEnvControlType" ENUM  "NoControl","SliderHoriz","SliderVert","PushButton","Edit","BitmapSwitch";
+BA_DEF_ SG_  "GenSigReceiveSetting" STRING ;
+BA_DEF_ SG_  "GenSigPreSetting" STRING ;
+BA_DEF_ SG_  "GenSigPreIfSetting" STRING ;
+BA_DEF_ SG_  "GenSigPostSetting" STRING ;
+BA_DEF_ SG_  "GenSigPostIfSetting" STRING ;
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ SG_  "GenSigEnvVarType" ENUM  "int","float","undef";
+BA_DEF_ SG_  "GenSigConditionalSend" STRING ;
+BA_DEF_ SG_  "GenSigAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigAssignSetting" STRING ;
+BA_DEF_ SG_  "GenSigAltSetting" STRING ;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "spontaneous","Cyclic";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ SG_  "NWM-WakeupAllowed" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgPreSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPreIfSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPostSetting" STRING ;
+BA_DEF_ BO_  "GenMsgPostIfSetting" STRING ;
+BA_DEF_ BO_  "GenMsgEVName" STRING ;
+BA_DEF_ BO_  "GenMsgConditionalSend" STRING ;
+BA_DEF_ BO_  "GenMsgAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgAutoGenDsp" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgAltSetting" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","spontaneous","cyclicIfActive","spontaneousWithDelay","cyclicAndSpontaneous","cyclicAndSpontaneousWithDelay","spontaneousWithRepetition","cyclicIfActiveAndSpontaneousWD";
+BA_DEF_ BO_  "GenMsgNrOfRepetitions" INT 0 999999;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 50000;
+BA_DEF_ BO_  "NmMessage" ENUM  "No","Yes";
+BA_DEF_ BU_  "GenNodAutoGenSnd" ENUM  "No","Yes";
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "NmNode" ENUM  "No","Yes";
+BA_DEF_ BU_  "GenNodSleepTime" INT 0 1000000;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 0;
+BA_DEF_  "GenEnvVarPrefix" STRING ;
+BA_DEF_  "GenEnvVarEndingSnd" STRING ;
+BA_DEF_  "GenEnvVarEndingDsp" STRING ;
+BA_DEF_  "GenNWMTalkNM" STRING ;
+BA_DEF_  "GenNWMSleepTime" INT 0 1000000;
+BA_DEF_  "GenNWMGotoMode_BusSleep" STRING ;
+BA_DEF_  "GenNWMGotoMode_Awake" STRING ;
+BA_DEF_  "GenNWMApCanWakeUp" STRING ;
+BA_DEF_  "GenNWMApCanSleep" STRING ;
+BA_DEF_  "GenNWMApCanOn" STRING ;
+BA_DEF_  "GenNWMApCanOff" STRING ;
+BA_DEF_  "GenNWMApCanNormal" STRING ;
+BA_DEF_  "GenNWMApBusSleep" STRING ;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 1000000000;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "GenSigDataID" "";
+BA_DEF_DEF_  "GenSigFuncType" "NoFunction";
+BA_DEF_DEF_  "SigGroup" "";
+BA_DEF_DEF_  "NmAsrMessage" "No";
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "E2EProfile" "";
+BA_DEF_DEF_  "E2EDataId" 0;
+BA_DEF_DEF_  "E2EP01DataIdMode" "all16Bit";
+BA_DEF_DEF_  "E2EDataLength" 64;
+BA_DEF_DEF_  "NmAsrNode" "No";
+BA_DEF_DEF_  "NmAsrNodeIdentifier" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "E2EP01SynCounterInit" 1;
+BA_DEF_DEF_  "E2EP01MaxNoNewOrRepeatedData" 14;
+BA_DEF_DEF_  "E2EP01DataIdNibbleOffset" 0;
+BA_DEF_DEF_  "E2EP01ProfileBehavior" "R4_2";
+BA_DEF_DEF_  "E2EP01CounterOffset" 56;
+BA_DEF_DEF_  "E2EP01CrcOffset" 0;
+BA_DEF_DEF_  "E2EP01MinOkStateInvalid" 2;
+BA_DEF_DEF_  "E2EP01MinOkStateValid" 1;
+BA_DEF_DEF_  "E2EP01MinOkStateInit" 1;
+BA_DEF_DEF_  "E2EP01UpperHeaderBitsToShift" 0;
+BA_DEF_DEF_  "E2EP01WindowSize" 3;
+BA_DEF_DEF_  "E2EP01MaxErrorStateInvalid" 1;
+BA_DEF_DEF_  "E2EP01MaxErrorStateValid" 1;
+BA_DEF_DEF_  "E2EP01MaxErrorStateInit" 1;
+BA_DEF_DEF_  "E2EP01MaxDeltaCounter" 2;
+BA_DEF_DEF_  "E2EP01ProfileName" "PROFILE_01";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "No";
+BA_DEF_DEF_  "DiagState" "No";
+BA_DEF_DEF_  "DiagResponse" "No";
+BA_DEF_DEF_  "DiagRequest" "No";
+BA_DEF_DEF_  "VersionNumber" 0;
+BA_DEF_DEF_  "VersionDay" 1;
+BA_DEF_DEF_  "VersionMonth" 1;
+BA_DEF_DEF_  "VersionYear" 0;
+BA_DEF_DEF_  "Manufacturer" "";
+BA_DEF_DEF_  "GenEnvAutoGenCtrl" "No";
+BA_DEF_DEF_  "GenEnvMsgOffset" 0;
+BA_DEF_DEF_  "GenEnvMsgName" "";
+BA_DEF_DEF_  "GenEnvControlType" "NoControl";
+BA_DEF_DEF_  "GenSigReceiveSetting" "";
+BA_DEF_DEF_  "GenSigPreSetting" "";
+BA_DEF_DEF_  "GenSigPreIfSetting" "";
+BA_DEF_DEF_  "GenSigPostSetting" "";
+BA_DEF_DEF_  "GenSigPostIfSetting" "";
+BA_DEF_DEF_  "GenSigEVName" "";
+BA_DEF_DEF_  "GenSigEnvVarType" "undef";
+BA_DEF_DEF_  "GenSigConditionalSend" "";
+BA_DEF_DEF_  "GenSigAutoGenSnd" "No";
+BA_DEF_DEF_  "GenSigAutoGenDsp" "No";
+BA_DEF_DEF_  "GenSigAssignSetting" "";
+BA_DEF_DEF_  "GenSigAltSetting" "";
+BA_DEF_DEF_  "GenSigSendType" "spontaneous";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "NWM-WakeupAllowed" "No";
+BA_DEF_DEF_  "GenMsgPreSetting" "";
+BA_DEF_DEF_  "GenMsgPreIfSetting" "";
+BA_DEF_DEF_  "GenMsgPostSetting" "";
+BA_DEF_DEF_  "GenMsgPostIfSetting" "";
+BA_DEF_DEF_  "GenMsgEVName" "";
+BA_DEF_DEF_  "GenMsgConditionalSend" "";
+BA_DEF_DEF_  "GenMsgAutoGenSnd" "No";
+BA_DEF_DEF_  "GenMsgAutoGenDsp" "No";
+BA_DEF_DEF_  "GenMsgAltSetting" "";
+BA_DEF_DEF_  "GenMsgSendType" "spontaneous";
+BA_DEF_DEF_  "GenMsgNrOfRepetitions" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 10;
+BA_DEF_DEF_  "NmMessage" "No";
+BA_DEF_DEF_  "GenNodAutoGenSnd" "No";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "NmNode" "No";
+BA_DEF_DEF_  "GenNodSleepTime" 0;
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "GenEnvVarPrefix" "Env";
+BA_DEF_DEF_  "GenEnvVarEndingSnd" "_";
+BA_DEF_DEF_  "GenEnvVarEndingDsp" "Dsp_";
+BA_DEF_DEF_  "GenNWMTalkNM" "TalkNM()";
+BA_DEF_DEF_  "GenNWMSleepTime" 0;
+BA_DEF_DEF_  "GenNWMGotoMode_BusSleep" "GotoMode_BusSleep()";
+BA_DEF_DEF_  "GenNWMGotoMode_Awake" "GotoMode_Awake()";
+BA_DEF_DEF_  "GenNWMApCanWakeUp" "apCanWakeUp()";
+BA_DEF_DEF_  "GenNWMApCanSleep" "apCanSleep()";
+BA_DEF_DEF_  "GenNWMApCanOn" "apCanOn()";
+BA_DEF_DEF_  "GenNWMApCanOff" "apCanOff()";
+BA_DEF_DEF_  "GenNWMApCanNormal" "apCanNormal()";
+BA_DEF_DEF_  "GenNWMApBusSleep" "apBusSleep()";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "BusType" "CAN";
+BA_ "BusType" "CAN";
+BA_ "Manufacturer" "Nexteer";
+BA_ "VersionYear" 21;
+BA_ "VersionMonth" 4;
+BA_ "VersionDay" 26;
+BA_ "VersionNumber" 1;
+BA_ "DBName" "GWM_A0607";
+BA_ "E2EDataLength" BO_ 881 64;
+BA_ "GenMsgCycleTime" BO_ 881 100;
+BA_ "GenMsgSendType" BO_ 881 0;
+BA_ "E2EProfile" BO_ 881 "P01";
+BA_ "E2EDataId" BO_ 881 31;
+BA_ "GenMsgILSupport" BO_ 881 1;
+BA_ "E2EDataLength" BO_ 130 64;
+BA_ "GenMsgSendType" BO_ 130 0;
+BA_ "GenMsgILSupport" BO_ 130 1;
+BA_ "E2EDataLength" BO_ 561 64;
+BA_ "GenMsgILSupport" BO_ 561 1;
+BA_ "GenMsgSendType" BO_ 561 0;
+BA_ "GenMsgCycleTime" BO_ 561 20;
+BA_ "E2EProfile" BO_ 561 "P01";
+BA_ "E2EDataId" BO_ 561 38;
+BA_ "E2EDataLength" BO_ 581 64;
+BA_ "E2EDataId" BO_ 581 59;
+BA_ "E2EProfile" BO_ 581 "P01";
+BA_ "GenMsgILSupport" BO_ 581 1;
+BA_ "GenMsgCycleTime" BO_ 581 20;
+BA_ "GenMsgSendType" BO_ 581 0;
+BA_ "E2EDataLength" BO_ 273 64;
+BA_ "GenMsgILSupport" BO_ 273 1;
+BA_ "GenMsgSendType" BO_ 273 0;
+BA_ "E2EDataLength" BO_ 161 64;
+BA_ "GenMsgILSupport" BO_ 161 1;
+BA_ "GenMsgSendType" BO_ 161 0;
+BA_ "E2EProfile" BO_ 161 "P01";
+BA_ "E2EDataId" BO_ 161 56;
+BA_ "E2EDataLength" BO_ 360 64;
+BA_ "GenMsgCycleTime" BO_ 360 20;
+BA_ "GenMsgSendType" BO_ 360 0;
+BA_ "GenMsgILSupport" BO_ 360 1;
+BA_ "E2EProfile" BO_ 360 "P01";
+BA_ "E2EDataId" BO_ 360 53;
+BA_ "E2EDataLength" BO_ 625 64;
+BA_ "GenMsgCycleTime" BO_ 625 20;
+BA_ "GenMsgSendType" BO_ 625 0;
+BA_ "GenMsgILSupport" BO_ 625 1;
+BA_ "E2EProfile" BO_ 625 "P01";
+BA_ "E2EDataId" BO_ 625 30;
+BA_ "E2EDataLength" BO_ 613 64;
+BA_ "GenMsgILSupport" BO_ 613 1;
+BA_ "GenMsgSendType" BO_ 613 0;
+BA_ "GenMsgCycleTime" BO_ 613 20;
+BA_ "E2EProfile" BO_ 613 "P01";
+BA_ "E2EDataId" BO_ 613 40;
+BA_ "E2EDataLength" BO_ 1810 8;
+BA_ "GenMsgCycleTime" BO_ 1810 0;
+BA_ "E2EDataLength" BO_ 1808 8;
+BA_ "GenMsgCycleTime" BO_ 1808 0;
+BA_ "E2EDataLength" BO_ 1597 8;
+BA_ "GenMsgCycleTime" BO_ 1597 0;
+BA_ "E2EDataLength" BO_ 1833 8;
+BA_ "GenMsgCycleTime" BO_ 1833 0;
+BA_ "DiagResponse" BO_ 1833 1;
+BA_ "E2EDataLength" BO_ 1596 8;
+BA_ "GenMsgCycleTime" BO_ 1596 0;
+BA_ "E2EDataLength" BO_ 1888 8;
+BA_ "DiagState" BO_ 1888 1;
+BA_ "GenMsgSendType" BO_ 1888 1;
+BA_ "GenMsgCycleTime" BO_ 1888 0;
+BA_ "E2EDataLength" BO_ 1825 8;
+BA_ "DiagRequest" BO_ 1825 1;
+BA_ "GenMsgSendType" BO_ 1825 1;
+BA_ "GenMsgCycleTime" BO_ 1825 0;
+BA_ "GenSigStartValue" SG_ 130 NetEngTrq 32767.0001310702;
+BA_ "GenSigStartValue" SG_ 561 WssFREdgesSumVld 1;
+BA_ "GenSigStartValue" SG_ 561 WssFLEdgesSumVld 1;
+BA_ "GenSigStartValue" SG_ 581 VehYawRate 8721;
+BA_ "GenSigStartValue" SG_ 273 EngSpdVldty 2;
+BA_ "GenSigStartValue" SG_ 360 EPS_SteerMod 3;
+BA_ "GenSigStartValue" SG_ 360 EPS_TrqSnsrSts 1;
+VAL_ 561 WssFREdgesSumVld 1 "Valid" 0 "Invalid" ;
+VAL_ 561 WssFLEdgesSumVld 1 "Valid" 0 "Invalid" ;
+VAL_ 581 VehDynYawRateVld 1 "Valid" 0 "Invalid" ;
+VAL_ 273 EngSpdVldty 3 "Reserved" 2 "Init value" 1 "Valid" 0 "Invalid" ;
+VAL_ 161 SteerWheelAngSign 1 "Right (Negative)" 0 "Left (Positive)" ;
+VAL_ 161 SAS_Sts 3 "Permanent Error Detected" 2 "Intermittent Error Detected" 1 "SAS Not Calibrated" 0 "SAS Angle And Speed Correct" ;
+VAL_ 360 EPS_SteerMod 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Reserved" 2 "Handiness Mode" 1 "Sport Mode" 0 "Comfort Mode" ;
+VAL_ 360 EPS_AvailSts 3 "Permanently failed" 2 "Active" 1 "Available for control" 0 "Temporary inhibit" ;
+VAL_ 360 EPS_InterferDetdVld 1 "Valid" 0 "Invalid" ;
+VAL_ 360 EPS_InterferDetd 1 "Interference" 0 "No Interference" ;
+VAL_ 360 EPS_TrqSnsrSts 1 "Abnormal" 0 "Normal" ;
+VAL_ 360 EPS_FailSts 3 "Reserved" 2 "Intermittent Error Detected" 1 "Permanent Error Detected" 0 "No fault" ;
+VAL_ 625 EngState 3 "Stalling" 2 "Running" 1 "Cranking" 0 "Stopped" ;
+VAL_ 613 VehSpdVld 1 "Valid" 0 "Invalid" ;
+SIG_GROUP_ 881 sigGroup_ECM3 1 : RollingCounter_ECM3 Checksum_ECM3 MaxEngTrqNorm;
+SIG_GROUP_ 561 sigGroup_ABS1 1 : CheckSum_ABS1 WssFLEdgesSum WssFREdgesSum WssFLEdgesSumVld WssFREdgesSumVld RollingCounter_ABS1;
+SIG_GROUP_ 581 sigGroup_ABM2 1 : VehYawRate VehDynYawRateVld CheckSum_ABM2 RollingCounter_ABM2;
+SIG_GROUP_ 161 sigGroup_CSA2 1 : Rollingcounter_CSA2 SAS_Sts SteerWheelAngSign SteerWheelAng Checksum_CSA2;
+SIG_GROUP_ 360 sigGroup_EPS1 1 : CheckSum_EPS1 EPS_FailSts EPS_TrqSnsrSts EPS_InterferDetd EPS_InterferDetdVld EPS_AvailSts RollingCounter_EPS1 EPS_SteerMod EPS_AssiRat;
+SIG_GROUP_ 625 sigGroup_ECM2 1 : RollingCounter_ECM2 Checksum_ECM2 EngState;
+SIG_GROUP_ 613 sigGroup_ABS3 1 : RollingCounter_ABS3 VehSpd VehSpdVld CheckSum_ABS3;
+
